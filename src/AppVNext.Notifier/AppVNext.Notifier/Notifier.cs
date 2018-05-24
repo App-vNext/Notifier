@@ -10,7 +10,7 @@ namespace AppVNext.Notifier
 	static class Notifier
 	{
 
-		public static void ShowToast(NotificationArguments arguments)
+		public static ToastNotification ShowToast(NotificationArguments arguments)
 		{
 			XmlDocument toastXml;
 			if (string.IsNullOrWhiteSpace(arguments.PicturePath))
@@ -31,7 +31,19 @@ namespace AppVNext.Notifier
 			}
 			else
 			{
-				 toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+				if (string.IsNullOrWhiteSpace(arguments.Title))
+				{
+					toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText01);
+					var stringElements = toastXml.GetElementsByTagName("text");
+					stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Message));
+				}
+				else
+				{
+					toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+					var stringElements = toastXml.GetElementsByTagName("text");
+					stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Title));
+					stringElements[1].AppendChild(toastXml.CreateTextNode(arguments.Message));
+				}
 
 				var imagePath = "file:///" + arguments.PicturePath;
 				var imageElements = toastXml.GetElementsByTagName("image");
@@ -43,7 +55,10 @@ namespace AppVNext.Notifier
 				SetSilentAttribute(toastXml);
 			}
 
-			SetSoundAttribute(arguments, toastXml);
+			if (!string.IsNullOrWhiteSpace(arguments.WindowsSound) || !string.IsNullOrWhiteSpace(arguments.SoundPath))
+			{
+				SetSoundAttribute(arguments, toastXml);
+			}
 
 			var toast = new ToastNotification(toastXml);
 			var events = new NotificationEvents();
@@ -52,7 +67,20 @@ namespace AppVNext.Notifier
 			toast.Dismissed += events.Dismissed;
 			toast.Failed += events.Failed;
 
+			//SetCommandsAttribute(toastXml);
+			SetVisualAttribute(toastXml);
+
+			if (!string.IsNullOrWhiteSpace(arguments.Duration))
+			{
+				SetDurationAttribute(toastXml, arguments.Duration);
+			}
+
+			System.Diagnostics.Debug.WriteLine(toastXml.GetXml());
+
 			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Show(toast);
+//			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Hide(toast);
+
+			return toast;
 		}
 
 		private static void SetSoundAttribute(NotificationArguments arguments, XmlDocument toastXml)
@@ -71,7 +99,7 @@ namespace AppVNext.Notifier
 			}
 
 			string sound;
-			if (String.IsNullOrWhiteSpace(arguments.WindowsSound))
+			if (string.IsNullOrWhiteSpace(arguments.WindowsSound))
 			{
 				sound = "file:///" + arguments.SoundPath;
 			}
@@ -86,6 +114,97 @@ namespace AppVNext.Notifier
 
 			attribute = toastXml.CreateAttribute("loop");
 			attribute.Value = arguments.Loop;
+		}
+
+
+		private static void SetVisualAttribute(XmlDocument toastXml)
+		{
+			var visual = toastXml.GetElementsByTagName("visual").FirstOrDefault();
+
+			var attribute = toastXml.CreateAttribute("branding");
+			attribute.Value = "none";
+			visual.Attributes.SetNamedItem(attribute);
+		}
+
+		private static void SetDurationAttribute(XmlDocument toastXml, string duration)
+		{
+			var toast = toastXml.GetElementsByTagName("toast").FirstOrDefault();
+
+			var attribute = toastXml.CreateAttribute("duration");
+			attribute.Value = duration;
+			toast.Attributes.SetNamedItem(attribute);
+		}
+
+		private static void SetCommandsAttribute(XmlDocument toastXml)
+		{
+			var commands = toastXml.GetElementsByTagName("commands").FirstOrDefault();
+			XmlElement commandsNode = null;
+
+			if (commands == null)
+			{
+				commands = toastXml.CreateElement("commands");
+				var toastNode = ((XmlElement)toastXml.SelectSingleNode("/toast"));
+
+				if (toastNode != null)
+				{
+
+
+					var attribute = toastXml.CreateAttribute("branding");
+					attribute.Value = "none";
+					toastNode.Attributes.SetNamedItem(attribute);
+
+
+
+					toastNode.AppendChild(commands);
+
+					attribute = toastXml.CreateAttribute("scenario");
+					attribute.Value = "alarm";
+					commands.Attributes.SetNamedItem(attribute);
+
+					var command = toastXml.CreateElement("command");
+					commandsNode = ((XmlElement)toastXml.SelectSingleNode("/toast/commands"));
+
+					if (commandsNode != null)
+					{
+						commandsNode.AppendChild(command);						
+					}
+
+					attribute = toastXml.CreateAttribute("id");
+					attribute.Value = "dismiss";
+					command.Attributes.SetNamedItem(attribute);
+
+					attribute = toastXml.CreateAttribute("arguments");
+					attribute.Value = "close-notification";
+					command.Attributes.SetNamedItem(attribute);
+
+
+
+					command = toastXml.CreateElement("command");
+					commandsNode = ((XmlElement)toastXml.SelectSingleNode("/toast/commands"));
+
+					if (commandsNode != null)
+					{
+						commandsNode.AppendChild(command);
+					}
+
+					attribute = toastXml.CreateAttribute("id");
+					attribute.Value = "snooze";
+					command.Attributes.SetNamedItem(attribute);
+
+					attribute = toastXml.CreateAttribute("arguments");
+					attribute.Value = "snooze-notification";
+					command.Attributes.SetNamedItem(attribute);
+				}
+			}
+
+			
+
+			//var attribute = toastXml.CreateAttribute("command");
+			//attribute.Value = sound;
+			//audio.Attributes.SetNamedItem(attribute);
+
+			//attribute = toastXml.CreateAttribute("loop");
+			//attribute.Value = arguments.Loop;
 		}
 
 		private static void SetSilentAttribute(XmlDocument toastXml)

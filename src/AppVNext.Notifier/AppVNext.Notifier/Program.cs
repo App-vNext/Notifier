@@ -41,14 +41,13 @@ namespace AppVNext.Notifier
 				if (string.IsNullOrEmpty(arguments.Errors) && !string.IsNullOrEmpty(arguments.Message))
 				{
 					SendNotification(arguments);
+					while (arguments.Wait) { System.Threading.Thread.Sleep(500); }
 				}
 				else 
 				{
 					WriteLine($"{(arguments.Errors ?? string.Empty)}");
 				}
 			}
-
-			while (arguments.Wait) { System.Threading.Thread.Sleep(500); }
 		}
 
 		private static void SendNotification(NotificationArguments arguments)

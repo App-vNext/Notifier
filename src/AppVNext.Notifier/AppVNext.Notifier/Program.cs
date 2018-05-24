@@ -48,10 +48,7 @@ namespace AppVNext.Notifier
 				}
 			}
 
-			//#if DEBUG
-			//			WriteLine("Hit Enter to exit.");
-			ReadLine();
-//#endif
+			while (arguments.Wait) { System.Threading.Thread.Sleep(500); }
 		}
 
 		private static void SendNotification(NotificationArguments arguments)

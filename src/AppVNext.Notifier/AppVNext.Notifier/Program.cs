@@ -13,23 +13,45 @@ namespace AppVNext.Notifier
 {
 	class Program
 	{
+		//static Notifications notifications = Notifications.Instance();
 
 		static void Main(string[] args)
 		{
 			var arguments = ProcessArguments(args);
-			if (arguments.AreValid())
+
+			if (arguments == null)
 			{
-				SendNotification(arguments);
+				WriteLine($"{Globals.HelpForNullMessage}{Globals.HelpForErrors}");
+				DisplayHelp();
 			}
 			else
 			{
-				WriteLine($"{Globals.NewLine}The message argument is required.{Globals.NewLine}");
+				if (arguments.Register)
+				{
+					if (ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName))
+					{
+						WriteLine(string.Format(Globals.HelpForRegisterSuccess, arguments.ApplicationId, arguments.ApplicationName));
+					}
+					else
+					{
+						WriteLine(string.Format(Globals.HelpForRegisterFail, arguments.ApplicationId, arguments.ApplicationName));
+					}
+				}
+
+				if (string.IsNullOrEmpty(arguments.Errors) && !string.IsNullOrEmpty(arguments.Message))
+				{
+					SendNotification(arguments);
+				}
+				else 
+				{
+					WriteLine($"{(arguments.Errors ?? string.Empty)}");
+				}
 			}
 
-#if DEBUG
-			WriteLine("Hit Enter to exit.");
+			//#if DEBUG
+			//			WriteLine("Hit Enter to exit.");
 			ReadLine();
-#endif
+//#endif
 		}
 
 		private static void SendNotification(NotificationArguments arguments)
@@ -38,7 +60,13 @@ namespace AppVNext.Notifier
 			{
 				ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName);
 			}
-			Notifier.ShowToast(arguments);
+			var toast = Notifier.ShowToast(arguments);
+
+			//if (!string.IsNullOrWhiteSpace(arguments.NotificationId))
+			//{
+			//	notifications.Add(new Notification(arguments.NotificationId, toast));
+			//	//WriteLine($"Notification count: {notifications.Count}");
+			//}
 		}
 
 		private static NotificationArguments ProcessArguments(string[] args)
@@ -46,7 +74,6 @@ namespace AppVNext.Notifier
 			var arguments = new NotificationArguments();
 			if (args.Length == 0)
 			{
-				DisplayHelp();
 				return null;
 			}
 			else if (args.Length == 1)
@@ -91,10 +118,9 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForRegister);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForRegister;
 							}
-							ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName);
+							arguments.Register = true;
 							break;
 
 						//Title
@@ -107,8 +133,7 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForTitle);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForTitle;
 							}
 							break;
 
@@ -122,8 +147,7 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForMessage);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForMessage;
 							}
 							break;
 
@@ -137,8 +161,25 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForPicture);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForPicture;
+							}
+							break;
+
+						//Duration
+						case "d":
+						case "duration":
+							if (i + 1 < args.Length)
+							{
+								arguments.Duration = args[i + 1];
+								if (arguments.Duration.ToLower() != "long" && arguments.Duration.ToLower() != "short")
+								{
+									arguments.Errors += Globals.HelpForDuration;
+								}
+								skipLoop = 1;
+							}
+							else
+							{
+								arguments.Errors += Globals.HelpForDuration;
 							}
 							break;
 
@@ -157,8 +198,7 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForId);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForId;
 							}
 							break;
 
@@ -180,8 +220,7 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForSound);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForSound;
 							}
 							break;
 
@@ -199,8 +238,7 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForAppId);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForAppId;
 							}
 							break;
 
@@ -213,19 +251,16 @@ namespace AppVNext.Notifier
 							}
 							else
 							{
-								WriteLine(Globals.HelpForClose);
-								Exit(-1);
+								arguments.Errors += Globals.HelpForClose;
 							}
 							break;
 
 						default:
-							WriteLine(string.Format(Globals.HelpForInvalidArgument, args[i]));
-							Exit(-1);
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
 							break;
 					}
 				}
 			}
-
 			return arguments;
 		}
 
@@ -255,6 +290,5 @@ namespace AppVNext.Notifier
 		{
 			WriteLine(Globals.HelpText);
 		}
-
 	}
 }

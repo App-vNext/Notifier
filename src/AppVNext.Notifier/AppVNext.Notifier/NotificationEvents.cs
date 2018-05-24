@@ -9,7 +9,7 @@ namespace AppVNext.Notifier
 	{
 		internal void Activated(ToastNotification sender, object e)
 		{
-			WriteLine("The user activated the notification");
+			WriteLine("The user clicked on the toast.");
 			Exit(0);
 		}
 
@@ -25,17 +25,17 @@ namespace AppVNext.Notifier
 
 				case ToastDismissalReason.ApplicationHidden:
 					//					var d = DismissalActions.Hidden;
-					WriteLine("The app hid the notification using ToastNotifier.Hide.");
+					WriteLine("The notification has been closed.");
 					Exit(1);
 					break;
 				case ToastDismissalReason.UserCanceled:
 					//				var d12 = DismissalActions.Hidden;
-					WriteLine("The user dismissed the notification.");
+					WriteLine("The user dismissed this toast");
 					Exit(2);
 					break;
 				case ToastDismissalReason.TimedOut:
 					//					var d2 = DismissalActions.Timeout;
-					WriteLine("The notification has timed out.");
+					WriteLine("The toast has timed out");
 					Exit(3);
 					break;
 			}
@@ -43,7 +43,7 @@ namespace AppVNext.Notifier
 
 		internal void Failed(ToastNotification sender, ToastFailedEventArgs e)
 		{
-			WriteLine("The notification encountered an error.");
+			WriteLine("An error has occurred.");
 			Exit(-1);
 		}
 	}

@@ -81,12 +81,13 @@ namespace AppVNext.Notifier
 			$"[s] [<sound URI>][<Windows sound>]	URI for a sound file or Windows sound to play when the notification displays.{NewLine}" +
 			$"					For possible Windows sound values visit http://msdn.microsoft.com/en-us/library/windows/apps/hh761492.aspx.{NewLine}" +
 			$"[-silent]				Does not play a sound when showing the notification.{NewLine}" +
-			$"[-d] <short|long>				Determines how long to display the notification for. Default is 'short'.{NewLine}" +
+			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" +
 			$"[-appID] <appID string>			Used to display the notification.{NewLine}" +
 			$"[-close] <ID string>			Closes notification. In order to be able to close a notification,{NewLine}" +
 			$"					the parameter -w must be used to create the notification.{NewLine}" +
 			$"[-?]					Displays this help.{NewLine}" +
-			$"[-help]					Displays this help.{NewLine}{NewLine}" +
+			$"[-help]					Displays this help.{NewLine}" +
+			$"Exit Codes:				Failed -1, Success 0, Close 1, Dismiss 2, Timeout 3.{NewLine}{NewLine}" +
 			$"Examples:{NewLine}{NewLine}" +
 			$"notifier \"Hello World!\"{NewLine}" +
 			$"notifier -t \"Notification Title\" -m \"Notification messsage.\"{NewLine}" +

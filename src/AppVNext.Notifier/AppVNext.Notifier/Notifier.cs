@@ -4,6 +4,7 @@ using System.Text;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Linq;
+using System.Diagnostics;
 
 namespace AppVNext.Notifier
 {
@@ -75,7 +76,7 @@ namespace AppVNext.Notifier
 				SetDurationAttribute(toastXml, arguments.Duration);
 			}
 
-			System.Diagnostics.Debug.WriteLine(toastXml.GetXml());
+			Debug.WriteLine(toastXml.GetXml());
 
 			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Show(toast);
 //			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Hide(toast);
@@ -124,6 +125,7 @@ namespace AppVNext.Notifier
 			var attribute = toastXml.CreateAttribute("branding");
 			attribute.Value = "none";
 			visual.Attributes.SetNamedItem(attribute);
+			Debug.WriteLine(toastXml.GetXml());
 		}
 
 		private static void SetDurationAttribute(XmlDocument toastXml, string duration)
@@ -147,8 +149,6 @@ namespace AppVNext.Notifier
 
 				if (toastNode != null)
 				{
-
-
 					var attribute = toastXml.CreateAttribute("branding");
 					attribute.Value = "none";
 					toastNode.Attributes.SetNamedItem(attribute);

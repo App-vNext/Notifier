@@ -2,12 +2,12 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("AppVNext.Notifier.Console")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("App vNext Notifier")]
+[assembly: AssemblyDescription("Command line tool to send Windows Toast Notifications.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AppVNext.Notifier.Console")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCompany("App vNext")]
+[assembly: AssemblyProduct("Notifier")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

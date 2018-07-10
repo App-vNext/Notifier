@@ -11,8 +11,10 @@ namespace AppVNext.Notifier
 	{
 		//General
 		internal static readonly string NewLine = Environment.NewLine;
-		internal static readonly string DefaultApplicationId = "com.brave.notifier";
-		internal static readonly string DefaultApplicationName = "brave-windows-notifier";
+		internal const string DefaultApplicationId = "com.brave.notifier";
+		internal const string DefaultApplicationName = "brave-windows-notifier";
+		internal const string NotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\{0}";
+		internal const string PushNotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications";
 
 		//Arguments help text
 		internal static readonly string HelpForRegister =
@@ -47,6 +49,10 @@ namespace AppVNext.Notifier
 			$"Argument -close requires 1 value: <ID string>.{NewLine}" +
 			$"Example: -close \"12345\"{NewLine}";
 
+		internal static readonly string HelpForNotificationsCheck =
+			$"Argument -n requires 1 value: <appID string>.{NewLine}" +
+			$"Example: -n \"com.brave.windows-notifier\"{NewLine}";
+
 		internal static readonly string HelpForDuration =
 			$"Argument -d requires 1 value: <short|long>.{NewLine}" +
 			$"Example: -d \"long\"{NewLine}";
@@ -74,23 +80,25 @@ namespace AppVNext.Notifier
 			$"Commands:{NewLine}{NewLine}" +
 			$"[-r] <appId string><appName string>	Registers notifier into the Windows machine.{NewLine}" +
 			$"[-t] <title string>			Title is displayed on the first line of the notification.{NewLine}" +
-			$"[-m] <message string>			Message is displayed wrappped below the title of the notification.{NewLine}" +
+			$"[-m] <message string>			Message is displayed wrapped below the title of the notification.{NewLine}" +
 			$"[-p] <image URI>			URI for a picture file to be displayed with the notification. Local files only. {NewLine}" +
 			$"[-w]					Wait for notification to expire or activate.{NewLine}" +
 			$"[-id] <id string>			Sets the ID of the toast notification to be able to close it.{NewLine}" +
-			$"[s] [<sound URI>][<Windows sound>]	URI for a sound file or Windows sound to play when the notification displays.{NewLine}" +
+			$"[-s] [<sound URI>][<Windows sound>]	URI for a sound file or Windows sound to play when the notification displays.{NewLine}" +
 			$"					For possible Windows sound values visit http://msdn.microsoft.com/en-us/library/windows/apps/hh761492.aspx.{NewLine}" +
 			$"[-silent]				Does not play a sound when showing the notification.{NewLine}" +
 			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" +
 			$"[-appID] <appID string>			Used to display the notification.{NewLine}" +
+			$"[-n] <appID string>			Returns Notifications setting status for the application. Return values: Enabled, Disabled or Unknown.{NewLine}" +
+			$"[-k]					Returns Notifications setting status for the system. Return values: Enabled or Disabled.{NewLine}" +
 			$"[-close] <ID string>			Closes notification. In order to be able to close a notification,{NewLine}" +
 			$"					the parameter -w must be used to create the notification.{NewLine}" +
 			$"[-?]					Displays this help.{NewLine}" +
 			$"[-help]					Displays this help.{NewLine}" +
 			$"Exit Codes:				Failed -1, Success 0, Close 1, Dismiss 2, Timeout 3.{NewLine}{NewLine}" +
 			$"Examples:{NewLine}{NewLine}" +
-			$"notifier \"Hello World!\"{NewLine}" +
-			$"notifier -t \"Notification Title\" -m \"Notification messsage.\"{NewLine}" +
+			$"notifier -t \"Hello World!\"{NewLine}" +
+			$"notifier -t \"Notification Title\" -m \"Notification message.\"{NewLine}" +
 			$"notifier help{NewLine}" +
 			$"notifier ?{NewLine}" +
 			$"notifier register com.brave.windows-notifier brave-windows-notifier{NewLine}" +

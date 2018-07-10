@@ -2,6 +2,8 @@
 using Windows.UI.Notifications;
 using static System.Environment;
 using static System.Console;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace AppVNext.Notifier
 {
@@ -9,7 +11,24 @@ namespace AppVNext.Notifier
 	{
 		internal void Activated(ToastNotification sender, object e)
 		{
-			WriteLine("The user clicked on the toast.");
+			var type = e.GetType();
+			var properties = new List<PropertyInfo>(type.GetProperties());
+
+			var results = string.Empty;
+
+			foreach (var property in properties)
+			{
+				if (!string.IsNullOrEmpty(results))
+				{
+					results += $"{results}{Globals.NewLine}";
+				}
+				if (property.GetValue(e, null) is string value && !string.IsNullOrWhiteSpace(value))
+				{
+					results += $"{property.Name}: {value}";
+				}
+			}
+
+			WriteLine($"The user clicked on the toast. {results}");
 			Exit(0);
 		}
 
@@ -43,7 +62,7 @@ namespace AppVNext.Notifier
 
 		internal void Failed(ToastNotification sender, ToastFailedEventArgs e)
 		{
-			WriteLine("An error has occurred.");
+			WriteLine($"An error has occurred. {e.ErrorCode}");
 			Exit(-1);
 		}
 	}

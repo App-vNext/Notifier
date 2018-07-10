@@ -18,6 +18,9 @@ namespace AppVNext.Notifier
 		public string Errors { get; internal set; }
 		public bool Register { get; internal set; }
 		public string Duration { get; internal set; }
+		public bool NotificationsCheck { get; internal set; }
+		public string NotificationCheckAppId { get; internal set; }
+		public bool PushNotificationCheck { get; internal set; }
 
 		internal bool AreValid()
 		{

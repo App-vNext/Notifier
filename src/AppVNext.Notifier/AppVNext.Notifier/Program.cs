@@ -13,8 +13,6 @@ namespace AppVNext.Notifier
 {
 	class Program
 	{
-		//static Notifications notifications = Notifications.Instance();
-
 		static void Main(string[] args)
 		{
 			var arguments = ProcessArguments(args);
@@ -31,11 +29,21 @@ namespace AppVNext.Notifier
 					if (ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName))
 					{
 						WriteLine(string.Format(Globals.HelpForRegisterSuccess, arguments.ApplicationId, arguments.ApplicationName));
-					}
+					}	
 					else
 					{
 						WriteLine(string.Format(Globals.HelpForRegisterFail, arguments.ApplicationId, arguments.ApplicationName));
 					}
+				}
+
+				if (arguments.NotificationsCheck)
+				{
+					WriteLine(RegistryHelper.AreNotificationsEnabled(arguments.NotificationCheckAppId));
+				}
+
+				if (arguments.PushNotificationCheck)
+				{
+					WriteLine(RegistryHelper.ArePushNotificationsEnabled());
 				}
 
 				if (string.IsNullOrEmpty(arguments.Errors) && !string.IsNullOrEmpty(arguments.Message))
@@ -57,12 +65,6 @@ namespace AppVNext.Notifier
 				ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName);
 			}
 			var toast = Notifier.ShowToast(arguments);
-
-			//if (!string.IsNullOrWhiteSpace(arguments.NotificationId))
-			//{
-			//	notifications.Add(new Notification(arguments.NotificationId, toast));
-			//	//WriteLine($"Notification count: {notifications.Count}");
-			//}
 		}
 
 		private static NotificationArguments ProcessArguments(string[] args)
@@ -78,14 +80,9 @@ namespace AppVNext.Notifier
 				if (normalizedArgument == "?" || normalizedArgument == "h" || normalizedArgument == "help")
 				{
 					DisplayHelp();
-				}
-				else
-				{
-					arguments.Message = args[0];
+					return null;
 				}
 			}
-			else
-			{
 				var skipLoop = 0;
 				for (int i = 0; i < args.Length; i++)
 				{
@@ -251,11 +248,28 @@ namespace AppVNext.Notifier
 							}
 							break;
 
+						//Notification Status
+						case "n":
+							if (i + 1 < args.Length)
+							{
+								arguments.NotificationsCheck = true;
+								arguments.NotificationCheckAppId = args[i + 1];
+								skipLoop = 1;
+							}
+							else
+							{
+								arguments.Errors += Globals.HelpForNotificationsCheck;
+							}
+							break;
+						//Push Notification Status
+						case "k":
+							arguments.PushNotificationCheck = true;
+							break;
+
 						default:
 							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
 							break;
 					}
-				}
 			}
 			return arguments;
 		}
@@ -264,7 +278,7 @@ namespace AppVNext.Notifier
 		/// Removes dash (-) and forward slash (/) from the beginning and converts the argument to lower case.
 		/// </summary>
 		/// <param name="argument"></param>
-		/// <returns>Normilized arguments.</returns>
+		/// <returns>Normalized arguments.</returns>
 		private static string NormalizeArgument(string argument)
 		{
 			if (string.IsNullOrWhiteSpace(argument))

@@ -13,6 +13,25 @@ namespace AppVNext.Notifier
 
 		public static ToastNotification ShowToast(NotificationArguments arguments)
 		{
+
+
+
+			var notifier = ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId);
+			var scheduled = notifier.GetScheduledToastNotifications();
+
+			for (var i = 0; i < scheduled.Count; i++)
+			{
+
+				// The itemId value is the unique ScheduledTileNotification.Id assigned to the 
+				// notification when it was created.
+				if (scheduled[i].Id == "")
+				{
+					notifier.RemoveFromSchedule(scheduled[i]);
+				}
+			}
+
+
+
 			XmlDocument toastXml;
 			if (string.IsNullOrWhiteSpace(arguments.PicturePath))
 			{
@@ -60,6 +79,8 @@ namespace AppVNext.Notifier
 			{
 				SetSoundAttribute(arguments, toastXml);
 			}
+
+			SetBrandingAttribute(toastXml);
 
 			var toast = new ToastNotification(toastXml);
 			var events = new NotificationEvents();
@@ -128,6 +149,15 @@ namespace AppVNext.Notifier
 			Debug.WriteLine(toastXml.GetXml());
 		}
 
+		private static void SetBrandingAttribute(XmlDocument toastXml)
+		{
+			var visual = toastXml.GetElementsByTagName("binding").FirstOrDefault();
+
+			var attribute = toastXml.CreateAttribute("branding");
+			attribute.Value = "logo";
+			visual.Attributes.SetNamedItem(attribute);
+			Debug.WriteLine(toastXml.GetXml());
+		}
 		private static void SetDurationAttribute(XmlDocument toastXml, string duration)
 		{
 			var toast = toastXml.GetElementsByTagName("toast").FirstOrDefault();
@@ -158,7 +188,7 @@ namespace AppVNext.Notifier
 					toastNode.AppendChild(commands);
 
 					attribute = toastXml.CreateAttribute("scenario");
-					attribute.Value = "alarm";
+					attribute.Value = "incomingCall";
 					commands.Attributes.SetNamedItem(attribute);
 
 					var command = toastXml.CreateElement("command");
@@ -170,7 +200,7 @@ namespace AppVNext.Notifier
 					}
 
 					attribute = toastXml.CreateAttribute("id");
-					attribute.Value = "dismiss";
+					attribute.Value = "voice";
 					command.Attributes.SetNamedItem(attribute);
 
 					attribute = toastXml.CreateAttribute("arguments");
@@ -188,11 +218,31 @@ namespace AppVNext.Notifier
 					}
 
 					attribute = toastXml.CreateAttribute("id");
-					attribute.Value = "snooze";
+					attribute.Value = "video";
 					command.Attributes.SetNamedItem(attribute);
 
 					attribute = toastXml.CreateAttribute("arguments");
 					attribute.Value = "snooze-notification";
+					command.Attributes.SetNamedItem(attribute);
+
+
+
+
+
+					command = toastXml.CreateElement("command");
+					commandsNode = ((XmlElement)toastXml.SelectSingleNode("/toast/commands"));
+
+					if (commandsNode != null)
+					{
+						commandsNode.AppendChild(command);
+					}
+
+					attribute = toastXml.CreateAttribute("id");
+					attribute.Value = "decline";
+					command.Attributes.SetNamedItem(attribute);
+
+					attribute = toastXml.CreateAttribute("arguments");
+					attribute.Value = "decline-notification";
 					command.Attributes.SetNamedItem(attribute);
 				}
 			}

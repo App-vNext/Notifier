@@ -14,8 +14,8 @@ namespace AppVNext.Notifier
 	{
 		//General
 		internal static readonly string NewLine = Environment.NewLine;
-		internal const string DefaultApplicationId = "com.brave.notifier";
-		internal const string DefaultApplicationName = "brave-windows-notifier";
+		internal const string DefaultApplicationId = "com.appvnext.notifier";
+		internal const string DefaultApplicationName = "appvnext-notifier";
 		internal const string NotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\{0}";
 		internal const string PushNotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications";
 

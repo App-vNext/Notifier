@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Windows.UI.Notifications;
+﻿using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Linq;
 using System.Diagnostics;
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Notifier class.
+	/// </summary>
 	static class Notifier
 	{
-
+		/// <summary>
+		/// Show toast notification.
+		/// </summary>
+		/// <param name="arguments">Notification arguments object.</param>
+		/// <returns>Toast notification object.</returns>
 		public static ToastNotification ShowToast(NotificationArguments arguments)
 		{
-
-
-
 			var notifier = ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId);
 			var scheduled = notifier.GetScheduledToastNotifications();
 
 			for (var i = 0; i < scheduled.Count; i++)
 			{
-
-				// The itemId value is the unique ScheduledTileNotification.Id assigned to the 
-				// notification when it was created.
+				// The itemId value is the unique ScheduledTileNotification.Id assigned to the notification when it was created.
 				if (scheduled[i].Id == "")
 				{
 					notifier.RemoveFromSchedule(scheduled[i]);
 				}
 			}
-
 
 
 			XmlDocument toastXml;
@@ -89,7 +87,9 @@ namespace AppVNext.Notifier
 			toast.Dismissed += events.Dismissed;
 			toast.Failed += events.Failed;
 
+			//SetCommandsAttribute is commented out as is not used at this momment.
 			//SetCommandsAttribute(toastXml);
+
 			SetVisualAttribute(toastXml);
 
 			if (!string.IsNullOrWhiteSpace(arguments.Duration))
@@ -99,12 +99,16 @@ namespace AppVNext.Notifier
 
 			Debug.WriteLine(toastXml.GetXml());
 
-			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Show(toast);
-//			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Hide(toast);
+			ToastNotificationManager.CreateToastNotifier(arguments.ApplicationId).Show(toast);			
 
 			return toast;
 		}
 
+		/// <summary>
+		/// Set sound attribute.
+		/// </summary>
+		/// <param name="arguments">Notification arguments object.</param>
+		/// <param name="toastXml">XML object used to add the sound attribute to.</param>
 		private static void SetSoundAttribute(NotificationArguments arguments, XmlDocument toastXml)
 		{
 			var audio = toastXml.GetElementsByTagName("audio").FirstOrDefault();
@@ -138,7 +142,10 @@ namespace AppVNext.Notifier
 			attribute.Value = arguments.Loop;
 		}
 
-
+		/// <summary>
+		/// Set the visual attribute.
+		/// </summary>
+		/// <param name="toastXml">XML object used to add the visual attribute to.</param>
 		private static void SetVisualAttribute(XmlDocument toastXml)
 		{
 			var visual = toastXml.GetElementsByTagName("visual").FirstOrDefault();
@@ -149,6 +156,10 @@ namespace AppVNext.Notifier
 			Debug.WriteLine(toastXml.GetXml());
 		}
 
+		/// <summary>
+		/// Set the branding attribute.
+		/// </summary>
+		/// <param name="toastXml">XML object used to add the branding attribute to.</param>
 		private static void SetBrandingAttribute(XmlDocument toastXml)
 		{
 			var visual = toastXml.GetElementsByTagName("binding").FirstOrDefault();
@@ -158,6 +169,12 @@ namespace AppVNext.Notifier
 			visual.Attributes.SetNamedItem(attribute);
 			Debug.WriteLine(toastXml.GetXml());
 		}
+
+		/// <summary>
+		/// Set the duration attribute.
+		/// </summary>
+		/// <param name="toastXml">XML object used to add the duration attribute to.</param>
+		/// <param name="duration">Duration (Long or Short.)</param>
 		private static void SetDurationAttribute(XmlDocument toastXml, string duration)
 		{
 			var toast = toastXml.GetElementsByTagName("toast").FirstOrDefault();
@@ -167,6 +184,10 @@ namespace AppVNext.Notifier
 			toast.Attributes.SetNamedItem(attribute);
 		}
 
+		/// <summary>
+		/// Set the commands attribute.
+		/// </summary>
+		/// <param name="toastXml">XML object used to add the commands attribute to.</param>
 		private static void SetCommandsAttribute(XmlDocument toastXml)
 		{
 			var commands = toastXml.GetElementsByTagName("commands").FirstOrDefault();
@@ -182,9 +203,6 @@ namespace AppVNext.Notifier
 					var attribute = toastXml.CreateAttribute("branding");
 					attribute.Value = "none";
 					toastNode.Attributes.SetNamedItem(attribute);
-
-
-
 					toastNode.AppendChild(commands);
 
 					attribute = toastXml.CreateAttribute("scenario");
@@ -196,7 +214,7 @@ namespace AppVNext.Notifier
 
 					if (commandsNode != null)
 					{
-						commandsNode.AppendChild(command);						
+						commandsNode.AppendChild(command);
 					}
 
 					attribute = toastXml.CreateAttribute("id");
@@ -206,8 +224,6 @@ namespace AppVNext.Notifier
 					attribute = toastXml.CreateAttribute("arguments");
 					attribute.Value = "close-notification";
 					command.Attributes.SetNamedItem(attribute);
-
-
 
 					command = toastXml.CreateElement("command");
 					commandsNode = ((XmlElement)toastXml.SelectSingleNode("/toast/commands"));
@@ -224,10 +240,6 @@ namespace AppVNext.Notifier
 					attribute = toastXml.CreateAttribute("arguments");
 					attribute.Value = "snooze-notification";
 					command.Attributes.SetNamedItem(attribute);
-
-
-
-
 
 					command = toastXml.CreateElement("command");
 					commandsNode = ((XmlElement)toastXml.SelectSingleNode("/toast/commands"));
@@ -246,17 +258,12 @@ namespace AppVNext.Notifier
 					command.Attributes.SetNamedItem(attribute);
 				}
 			}
-
-			
-
-			//var attribute = toastXml.CreateAttribute("command");
-			//attribute.Value = sound;
-			//audio.Attributes.SetNamedItem(attribute);
-
-			//attribute = toastXml.CreateAttribute("loop");
-			//attribute.Value = arguments.Loop;
 		}
 
+		/// <summary>
+		/// Set the silent attribute.
+		/// </summary>
+		/// <param name="toastXml">XML object used to add the silent attribute to.</param>
 		private static void SetSilentAttribute(XmlDocument toastXml)
 		{
 			var audio = toastXml.GetElementsByTagName("audio").FirstOrDefault();

@@ -2,6 +2,9 @@
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Used for all possible arguments allowed.
+	/// </summary>
 	internal class NotificationArguments
 	{
 		public string ApplicationId { get; internal set; } = Globals.DefaultApplicationId;
@@ -22,6 +25,10 @@ namespace AppVNext.Notifier
 		public string NotificationCheckAppId { get; internal set; }
 		public bool PushNotificationCheck { get; internal set; }
 
+		/// <summary>
+		/// Check if the arguments are valid or not.
+		/// </summary>
+		/// <returns>True if the arguments are valid, false otherwise.</returns>
 		internal bool AreValid()
 		{
 			var isValid = string.IsNullOrWhiteSpace(Errors) 

@@ -7,6 +7,9 @@ using static System.Environment;
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Global variables and constants
+	/// </summary>
 	class Globals
 	{
 		//General

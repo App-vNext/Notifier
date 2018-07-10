@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Windows.Storage;
+﻿using System.IO;
 using static System.Console;
-using static System.Environment;
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Notifier main program.
+	/// </summary>
 	class Program
 	{
+		/// <summary>
+		/// Main method.
+		/// </summary>
+		/// <param name="args">Arguments for the notification.</param>
 		static void Main(string[] args)
 		{
 			var arguments = ProcessArguments(args);
@@ -58,6 +57,10 @@ namespace AppVNext.Notifier
 			}
 		}
 
+		/// <summary>
+		/// Send notification.
+		/// </summary>
+		/// <param name="arguments">Notification arguments object.</param>
 		private static void SendNotification(NotificationArguments arguments)
 		{
 			if (arguments.ApplicationId == Globals.DefaultApplicationId)
@@ -67,6 +70,11 @@ namespace AppVNext.Notifier
 			var toast = Notifier.ShowToast(arguments);
 		}
 
+		/// <summary>
+		/// Process arguments, normalize them and validate them.
+		/// </summary>
+		/// <param name="args">Notification arguments array.</param>
+		/// <returns>Notification arguments object.</returns>
 		private static NotificationArguments ProcessArguments(string[] args)
 		{
 			var arguments = new NotificationArguments();
@@ -277,7 +285,7 @@ namespace AppVNext.Notifier
 		/// <summary>
 		/// Removes dash (-) and forward slash (/) from the beginning and converts the argument to lower case.
 		/// </summary>
-		/// <param name="argument"></param>
+		/// <param name="argument">Argument to normalize.</param>
 		/// <returns>Normalized arguments.</returns>
 		private static string NormalizeArgument(string argument)
 		{

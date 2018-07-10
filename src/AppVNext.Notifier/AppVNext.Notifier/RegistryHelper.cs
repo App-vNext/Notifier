@@ -1,14 +1,17 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Helper class to read Windows registry setting.
+	/// </summary>
 	static class RegistryHelper
 	{
+		/// <summary>
+		/// Returns whether Notifications are enabled or not in Windows.
+		/// </summary>
+		/// <param name="appId">Application ID of the application to check the setting for.</param>
+		/// <returns>Unknown = -1, Disabled = 0, Enabled = 1</returns>
 		internal static EnableTypes AreNotificationsEnabled(string appId)
 		{
 			var notificationKey = string.Format(Globals.NotificationKey, appId);
@@ -28,6 +31,10 @@ namespace AppVNext.Notifier
 			return EnableTypes.Unknown;
 		}
 
+		/// <summary>
+		/// Returns whether Push Notifications are enabled or not in Windows.
+		/// </summary>
+		/// <returns>Unknown = -1, Disabled = 0, Enabled = 1</returns>
 		internal static EnableTypes ArePushNotificationsEnabled()
 		{
 			var notificationKey = string.Format(Globals.PushNotificationKey);

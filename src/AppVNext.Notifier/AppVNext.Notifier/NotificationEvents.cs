@@ -7,8 +7,16 @@ using System.Reflection;
 
 namespace AppVNext.Notifier
 {
+	/// <summary>
+	/// Used when the Notification has been activated, dismissed or failed.
+	/// </summary>
 	class NotificationEvents
 	{
+		/// <summary>
+		/// Triggered when the notification has been activated or clicked on.
+		/// </summary>
+		/// <param name="sender">ToastNotification sender object.</param>
+		/// <param name="e">Used to get the properties when the notifications has been activated or clicked on.</param>
 		internal void Activated(ToastNotification sender, object e)
 		{
 			var type = e.GetType();
@@ -32,34 +40,35 @@ namespace AppVNext.Notifier
 			Exit(0);
 		}
 
+		/// <summary>
+		/// Triggered when the notification has been dismissed.
+		/// </summary>
+		/// <param name="sender">ToastNotification sender object.</param>
+		/// <param name="e">Toast dismissed event arguments.</param>
 		internal void Dismissed(ToastNotification sender, ToastDismissedEventArgs e)
 		{
 			switch (e.Reason)
 			{
-				//Failed	-1
-				//Success	0
-				//Hidden	1
-				//Dismissed	2
-				//Timeout	3
-
 				case ToastDismissalReason.ApplicationHidden:
-					//					var d = DismissalActions.Hidden;
 					WriteLine("The notification has been closed.");
-					Exit(1);
+					Exit((int)DismissalActions.Hidden);
 					break;
 				case ToastDismissalReason.UserCanceled:
-					//				var d12 = DismissalActions.Hidden;
 					WriteLine("The user dismissed this toast");
-					Exit(2);
+					Exit((int)DismissalActions.Dismissed);
 					break;
 				case ToastDismissalReason.TimedOut:
-					//					var d2 = DismissalActions.Timeout;
 					WriteLine("The toast has timed out");
-					Exit(3);
+					Exit((int)DismissalActions.Timeout);
 					break;
 			}
 		}
 
+		/// <summary>
+		/// Triggered when the notification failed.
+		/// </summary>
+		/// <param name="sender">ToastNotification sender object.</param>
+		/// <param name="e">Toast failed event arguments.</param>
 		internal void Failed(ToastNotification sender, ToastFailedEventArgs e)
 		{
 			WriteLine($"An error has occurred. {e.ErrorCode}");

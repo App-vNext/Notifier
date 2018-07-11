@@ -14,15 +14,15 @@ namespace AppVNext.Notifier
 	{
 		//General
 		internal static readonly string NewLine = Environment.NewLine;
-		internal const string DefaultApplicationId = "com.appvnext.notifier";
-		internal const string DefaultApplicationName = "appvnext-notifier";
+		internal const string DefaultApplicationId = "com.appvnext.windows-notifier";
+		internal const string DefaultApplicationName = "appvnext-windows-notifier";
 		internal const string NotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\{0}";
 		internal const string PushNotificationKey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications";
 
 		//Arguments help text
 		internal static readonly string HelpForRegister =
 			$"Argument -r requires 2 values: <appId string> and <appName string>.{NewLine}" +
-			$"Example: -r \"com.brave.windows-notifier\" \"brave-windows-notifier\"{NewLine}";
+			$"Example: -r \"com.appvnext.windows-notifier\" \"appvnext-windows-notifier\"{NewLine}";
 
 		internal static readonly string HelpForTitle =
 			$"Argument -t requires 1 value: <title string>.{NewLine}" +
@@ -46,7 +46,7 @@ namespace AppVNext.Notifier
 
 		internal static readonly string HelpForAppId =
 			$"Argument -appID requires 1 value: <appID string>.{NewLine}" +
-			$"Example: -appID \"com.brave.windows-notifier\"{NewLine}";
+			$"Example: -appID \"com.appvnext.windows-notifier\"{NewLine}";
 
 		internal static readonly string HelpForClose =
 			$"Argument -close requires 1 value: <ID string>.{NewLine}" +
@@ -54,7 +54,7 @@ namespace AppVNext.Notifier
 
 		internal static readonly string HelpForNotificationsCheck =
 			$"Argument -n requires 1 value: <appID string>.{NewLine}" +
-			$"Example: -n \"com.brave.windows-notifier\"{NewLine}";
+			$"Example: -n \"com.appvnext.windows-notifier\"{NewLine}";
 
 		internal static readonly string HelpForDuration =
 			$"Argument -d requires 1 value: <short|long>.{NewLine}" +
@@ -104,7 +104,7 @@ namespace AppVNext.Notifier
 			$"notifier -t \"Notification Title\" -m \"Notification message.\"{NewLine}" +
 			$"notifier help{NewLine}" +
 			$"notifier ?{NewLine}" +
-			$"notifier register com.brave.windows-notifier brave-windows-notifier{NewLine}" +
+			$"notifier register com.appvnext.windows-notifier appvnext-windows-notifier{NewLine}" +
 			$"{NewLine}";
 	}
 }

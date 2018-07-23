@@ -2,6 +2,7 @@
 using Windows.Data.Xml.Dom;
 using System.Linq;
 using System.Diagnostics;
+using AppVNext.Notifier.Common;
 
 namespace AppVNext.Notifier
 {

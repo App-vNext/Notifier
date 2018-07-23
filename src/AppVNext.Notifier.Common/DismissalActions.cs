@@ -1,9 +1,9 @@
-﻿namespace AppVNext.Notifier
+﻿namespace AppVNext.Notifier.Common
 {
 	/// <summary>
 	/// Notification actions.
 	/// </summary>
-	enum DismissalActions
+	public enum DismissalActions
 	{
 		Failed = -1,
 		Success = 0,

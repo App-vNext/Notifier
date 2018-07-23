@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using AppVNext.Notifier.Common;
+using Microsoft.Win32;
 
 namespace AppVNext.Notifier
 {

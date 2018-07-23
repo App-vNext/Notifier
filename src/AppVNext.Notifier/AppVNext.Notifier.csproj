@@ -58,9 +58,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnableTypes.cs" />
-    <Compile Include="Globals.cs" />
-    <Compile Include="NotificationArguments.cs" />
     <Compile Include="Notifier.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,7 +65,6 @@
     <Compile Include="ShellHelper.cs" />
     <Compile Include="ShortcutCreator.cs" />
     <Compile Include="NotificationEvents.cs" />
-    <Compile Include="DismissalActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -80,6 +76,12 @@
     <Content Include="sound.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppVNext.Notifier.Common\AppVNext.Notifier.Common.csproj">
+      <Project>{71bc5b4c-e5e3-4c46-933d-a772ca3c0499}</Project>
+      <Name>AppVNext.Notifier.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

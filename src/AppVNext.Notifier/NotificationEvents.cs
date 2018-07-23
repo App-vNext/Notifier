@@ -4,6 +4,7 @@ using static System.Environment;
 using static System.Console;
 using System.Collections.Generic;
 using System.Reflection;
+using AppVNext.Notifier.Common;
 
 namespace AppVNext.Notifier
 {

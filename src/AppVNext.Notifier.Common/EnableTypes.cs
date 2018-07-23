@@ -1,9 +1,9 @@
-﻿namespace AppVNext.Notifier
+﻿namespace AppVNext.Notifier.Common
 {
 	/// <summary>
 	/// Used when determining whether Push Notifications are allowed or not on Windows.
 	/// </summary>
-	internal enum EnableTypes
+	public enum EnableTypes
 	{
 		Unknown = -1,
 		Disabled = 0,

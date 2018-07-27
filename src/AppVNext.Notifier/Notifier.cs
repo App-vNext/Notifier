@@ -30,26 +30,27 @@ namespace AppVNext.Notifier
 				}
 			}
 
-
 			XmlDocument toastXml;
-			if (string.IsNullOrWhiteSpace(arguments.PicturePath))
-			{
-				if (string.IsNullOrWhiteSpace(arguments.Title))
-				{
-					toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
-					var stringElements = toastXml.GetElementsByTagName("text");
-					stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Message));
-				}
-				else
-				{
-					toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-					var stringElements = toastXml.GetElementsByTagName("text");
-					stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Title));
-					stringElements[1].AppendChild(toastXml.CreateTextNode(arguments.Message));
-				}
-			}
-			else
-			{
+
+			//Set the image
+			//if (string.IsNullOrWhiteSpace(arguments.PicturePath))
+			//{
+			//	if (string.IsNullOrWhiteSpace(arguments.Title))
+			//	{
+			//		toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+			//		var stringElements = toastXml.GetElementsByTagName("text");
+			//		stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Message));
+			//	}
+			//	else
+			//	{
+			//		toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+			//		var stringElements = toastXml.GetElementsByTagName("text");
+			//		stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Title));
+			//		stringElements[1].AppendChild(toastXml.CreateTextNode(arguments.Message));
+			//	}
+			//}
+			//else
+			//{
 				if (string.IsNullOrWhiteSpace(arguments.Title))
 				{
 					toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText01);
@@ -63,11 +64,14 @@ namespace AppVNext.Notifier
 					stringElements[0].AppendChild(toastXml.CreateTextNode(arguments.Title));
 					stringElements[1].AppendChild(toastXml.CreateTextNode(arguments.Message));
 				}
+			//}
 
-				var imagePath = "file:///" + arguments.PicturePath;
-				var imageElements = toastXml.GetElementsByTagName("image");
-				imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
-			}
+			var imagePath = "file:///" + (string.IsNullOrWhiteSpace(arguments.PicturePath)
+			? Globals.DefaultIcon
+			: arguments.PicturePath);
+
+			var imageElements = toastXml.GetElementsByTagName("image");
+			imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
 			if (arguments.Silent)
 			{

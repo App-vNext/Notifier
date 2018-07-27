@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Environment;
@@ -17,6 +19,10 @@ namespace AppVNext.Notifier.Common
 		/// all features apply to both.
 		/// </summary>
 		public static ApplicationTypes ApplicationType { get; set; }
+
+		public static string DefaultIcon = ApplicationType == ApplicationTypes.WindowsDesktop 
+			? $"{Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icon.ico")}"
+			: "ms-appdata:///local/Icon.ico";
 
 		//General
 		public static readonly string NewLine = Environment.NewLine;

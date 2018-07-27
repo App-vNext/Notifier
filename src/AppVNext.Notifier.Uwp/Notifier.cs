@@ -34,9 +34,7 @@ namespace AppVNext.Notifier
 				}
 			}
 
-			var image = "https://picsum.photos/360/202?image=883";
-			var logo = "ms-appdata:///local/Icon.ico";
-
+			//Set the toast visual
 			var visual = new ToastVisual()
 			{
 				BindingGeneric = new ToastBindingGeneric()
@@ -55,23 +53,19 @@ namespace AppVNext.Notifier
 				}
 			};
 
-			if (!string.IsNullOrWhiteSpace(arguments.PicturePath))
+			//Set the image
+			var imagePath = "file:///" + (string.IsNullOrWhiteSpace(arguments.PicturePath) 
+				? Globals.DefaultIcon
+				: arguments.PicturePath);
+
+			visual.BindingGeneric.AppLogoOverride = new ToastGenericAppLogo()
 			{
-				var imagePath = "file:///" + arguments.PicturePath;
-				//visual.BindingGeneric.Children.Add(new AdaptiveImage()
-				//{
-				//	Source = imagePath
-				//});
+				Source = imagePath,
+				HintCrop = ToastGenericAppLogoCrop.Circle
+			};
 
-				visual.BindingGeneric.AppLogoOverride = new ToastGenericAppLogo()
-				{
-					Source = imagePath,
-					HintCrop = ToastGenericAppLogoCrop.Circle
-				};
-			}
-
+			//Set the audio
 			ToastAudio audio = null;
-
 			if (!string.IsNullOrWhiteSpace(arguments.WindowsSound) || !string.IsNullOrWhiteSpace(arguments.SoundPath))
 			{
 				string sound;
@@ -92,69 +86,14 @@ namespace AppVNext.Notifier
 				};
 			}
 
-			ToastActionsCustom actions = new ToastActionsCustom()
-			{
-				Inputs =
-				{
-					new ToastTextBox("tbReply")
-					{
-						PlaceholderContent = "Type a response"
-					}
-				},
-
-				Buttons =
-				{
-					new ToastButton("Reply", new QueryString()
-					{
-						{ "action", "reply" },
-						{ "conversationId", arguments.NotificationId }
-
-					}.ToString())
-					{
-						ActivationType = ToastActivationType.Background,
-						ImageUri = "Assets/Reply.png",
- 
-						// Reference the text box's ID in order to
-						// place this button next to the text box
-						TextBoxId = "tbReply"
-					},
-
-					new ToastButton("Like", new QueryString()
-					{
-						{ "action", "like" },
-						{ "conversationId", arguments.NotificationId }
-
-					}.ToString())
-					{
-						ActivationType = ToastActivationType.Background
-					},
-
-					new ToastButton("View", new QueryString()
-					{
-						{ "action", "viewImage" },
-						{ "imageUrl", image }
-
-					}.ToString())
-				}
-			};
-
-			// Now we can construct the final toast content
-			ToastContent toastContent = new ToastContent()
+			// Construct the toast content
+			var toastContent = new ToastContent()
 			{
 				Visual = visual,
-				Audio = audio,
-				//Actions = actions,
-
-				// Arguments when the user taps body of toast
-				Launch = new QueryString()
-				{
-					{ "action", "viewConversation" },
-					{ "conversationId", arguments.NotificationId }
-
-				}.ToString()
+				Audio = audio
 			};
 
-			// Create the toast notification
+			// Create notification
 			var toast = new ToastNotification(toastContent.GetXml());
 
 			// Set the expiration time
@@ -171,13 +110,13 @@ namespace AppVNext.Notifier
 				}
 			}
 
+			//Add event handlers
 			var events = new NotificationEvents();
-
 			toast.Activated += events.Activated;
 			toast.Dismissed += events.Dismissed;
 			toast.Failed += events.Failed;
 
-
+			//Show notification
 			ToastNotificationManager.CreateToastNotifier().Show(toast);
 
 			return toast;

@@ -49,17 +49,24 @@ namespace AppVNext.Notifier.Common
 					//Register application
 					case "r":
 					case "register":
-						if (i + 2 < args.Length)
+						if (Globals.ApplicationType == ApplicationTypes.WindowsDesktop)
 						{
-							arguments.ApplicationId = args[i + 1];
-							arguments.ApplicationName = args[i + 2];
-							skipLoop = 2;
+							if (i + 2 < args.Length)
+							{
+								arguments.ApplicationId = args[i + 1];
+								arguments.ApplicationName = args[i + 2];
+								skipLoop = 2;
+							}
+							else
+							{
+								arguments.Errors += Globals.HelpForRegister;
+							}
+							arguments.Register = true;
 						}
 						else
 						{
-							arguments.Errors += Globals.HelpForRegister;
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
 						}
-						arguments.Register = true;
 						break;
 
 					//Title
@@ -107,18 +114,25 @@ namespace AppVNext.Notifier.Common
 					//Duration
 					case "d":
 					case "duration":
-						if (i + 1 < args.Length)
+						if (Globals.ApplicationType == ApplicationTypes.WindowsDesktop)
 						{
-							arguments.Duration = args[i + 1];
-							if (arguments.Duration.ToLower() != "long" && arguments.Duration.ToLower() != "short")
+							if (i + 1 < args.Length)
+							{
+								arguments.Duration = args[i + 1];
+								if (arguments.Duration.ToLower() != "long" && arguments.Duration.ToLower() != "short")
+								{
+									arguments.Errors += Globals.HelpForDuration;
+								}
+								skipLoop = 1;
+							}
+							else
 							{
 								arguments.Errors += Globals.HelpForDuration;
 							}
-							skipLoop = 1;
 						}
 						else
 						{
-							arguments.Errors += Globals.HelpForDuration;
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
 						}
 						break;
 

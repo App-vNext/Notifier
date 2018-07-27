@@ -198,10 +198,6 @@
       <Project>{71bc5b4c-e5e3-4c46-933d-a772ca3c0499}</Project>
       <Name>AppVNext.Notifier.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppVNext.Notifier.Uwp.Tasks\AppVNext.Notifier.Uwp.Tasks.csproj">
-      <Project>{796a3452-8359-494e-8ab8-946ce61fed18}</Project>
-      <Name>AppVNext.Notifier.Uwp.Tasks</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

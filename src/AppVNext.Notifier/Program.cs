@@ -15,6 +15,9 @@ namespace AppVNext.Notifier
 		/// <param name="args">Arguments for the notification.</param>
 		static void Main(string[] args)
 		{
+			//Initialize application type. TODO: Replace this with dependency injection.
+			Globals.ApplicationType = ApplicationTypes.WindowsDesktop;
+
 			var arguments = ArgumentManager.ProcessArguments(args);
 
 			if (arguments == null)

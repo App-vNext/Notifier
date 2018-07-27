@@ -12,6 +12,12 @@ namespace AppVNext.Notifier.Common
 	/// </summary>
 	public class Globals
 	{
+		/// <summary>
+		/// Used to differentiate between the Windows Desktop and UWP application types as not 
+		/// all features apply to both.
+		/// </summary>
+		public static ApplicationTypes ApplicationType { get; set; }
+
 		//General
 		public static readonly string NewLine = Environment.NewLine;
 		public const string DefaultApplicationId = "com.appvnext.windows-notifier";
@@ -81,7 +87,8 @@ namespace AppVNext.Notifier.Common
 			$"Create a send notifications.{NewLine}{NewLine}" +
 			$"Usage: notifier <command>{NewLine}{NewLine}" +
 			$"Commands:{NewLine}{NewLine}" +
-			$"[-r] <appId string><appName string>	Registers notifier into the Windows machine.{NewLine}" +
+			(ApplicationType == ApplicationTypes.WindowsDesktop ? 
+			$"[-r] <appId string><appName string>	Registers notifier into the Windows machine.{NewLine}" : string.Empty) +
 			$"[-t] <title string>			Title is displayed on the first line of the notification.{NewLine}" +
 			$"[-m] <message string>			Message is displayed wrapped below the title of the notification.{NewLine}" +
 			$"[-p] <image URI>			URI for a picture file to be displayed with the notification. Local files only. {NewLine}" +
@@ -90,7 +97,8 @@ namespace AppVNext.Notifier.Common
 			$"[-s] [<sound URI>][<Windows sound>]	URI for a sound file or Windows sound to play when the notification displays.{NewLine}" +
 			$"					For possible Windows sound values visit http://msdn.microsoft.com/en-us/library/windows/apps/hh761492.aspx.{NewLine}" +
 			$"[-silent]				Does not play a sound when showing the notification.{NewLine}" +
-			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" +
+			(ApplicationType == ApplicationTypes.WindowsDesktop ?
+			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" : string.Empty) +
 			$"[-appID] <appID string>			Used to display the notification.{NewLine}" +
 			$"[-n] <appID string>			Returns Notifications setting status for the application. Return values: Enabled, Disabled or Unknown.{NewLine}" +
 			$"[-k]					Returns Notifications setting status for the system. Return values: Enabled or Disabled.{NewLine}" +
@@ -104,7 +112,8 @@ namespace AppVNext.Notifier.Common
 			$"notifier -t \"Notification Title\" -m \"Notification message.\"{NewLine}" +
 			$"notifier help{NewLine}" +
 			$"notifier ?{NewLine}" +
-			$"notifier register com.appvnext.windows-notifier appvnext-windows-notifier{NewLine}" +
+			(ApplicationType == ApplicationTypes.WindowsDesktop ?
+			$"notifier register com.appvnext.windows-notifier appvnext-windows-notifier{NewLine}" : string.Empty) +
 			$"{NewLine}";
 	}
 }

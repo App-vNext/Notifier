@@ -19,6 +19,9 @@ namespace AppVNext.Notifier.Uwp
 		/// <param name="args">Arguments for the notification.</param>
 		static void Main(string[] args)
 		{
+			//Initialize application type. TODO: Replace this with dependency injection.
+			Globals.ApplicationType = ApplicationTypes.UniversalWindowsPlatform;
+
 			//RegisterBackgroundTask();
 
 			var arguments = ArgumentManager.ProcessArguments(args);

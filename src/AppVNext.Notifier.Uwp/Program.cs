@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-
 using static System.Console;
 using AppVNext.Notifier.Common;
-using Windows.ApplicationModel.Background;
-using AppVNext.Notifier.Uwp.Tasks;
 
 /// <summary>
 /// Notifier main program.

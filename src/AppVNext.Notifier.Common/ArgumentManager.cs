@@ -6,8 +6,8 @@ using static System.Console;
 
 namespace AppVNext.Notifier.Common
 {
-    public class ArgumentManager
-    {
+	public class ArgumentManager
+	{
 		/// <summary>
 		/// Process arguments, normalize them and validate them.
 		/// </summary>

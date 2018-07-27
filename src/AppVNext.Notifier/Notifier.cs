@@ -88,7 +88,7 @@ namespace AppVNext.Notifier
 			toast.Dismissed += events.Dismissed;
 			toast.Failed += events.Failed;
 
-			//SetCommandsAttribute is commented out as is not used at this momment.
+			//SetCommandsAttribute is commented out as is not used at this moment.
 			//SetCommandsAttribute(toastXml);
 
 			SetVisualAttribute(toastXml);

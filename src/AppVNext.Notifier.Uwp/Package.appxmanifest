@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4" xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" IgnorableNamespaces="uap mp uap5 iot2 desktop4">
-  <Identity Name="Notifier" Publisher="CN=hanspayini" Version="1.0.0.0" />
+  <Identity Name="Notifier" Publisher="CN=hanspayini" Version="1.0.2.0" />
   <mp:PhoneIdentity PhoneProductId="dea460fc-0d5c-4248-a7b7-7c3cf2225d11" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Notifier</DisplayName>

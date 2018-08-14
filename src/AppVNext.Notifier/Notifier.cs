@@ -66,10 +66,8 @@ namespace AppVNext.Notifier
 				}
 			//}
 
-			var imagePath = "file:///" + (string.IsNullOrWhiteSpace(arguments.PicturePath)
-			? Globals.DefaultIcon
-			: arguments.PicturePath);
-
+			var imagePath = Globals.GetImageOrDefault(arguments.PicturePath);
+	
 			var imageElements = toastXml.GetElementsByTagName("image");
 			imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 

@@ -29,7 +29,7 @@ namespace AppVNext.Notifier
 			{
 				if (!string.IsNullOrEmpty(results))
 				{
-					results += $"{results}{Globals.NewLine}";
+					results += Globals.NewLine;
 				}
 				if (property.GetValue(e, null) is string value && !string.IsNullOrWhiteSpace(value))
 				{

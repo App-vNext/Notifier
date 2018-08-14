@@ -54,9 +54,7 @@ namespace AppVNext.Notifier
 			};
 
 			//Set the image
-			var imagePath = "file:///" + (string.IsNullOrWhiteSpace(arguments.PicturePath) 
-				? Globals.DefaultIcon
-				: arguments.PicturePath);
+			var imagePath = Globals.GetImageOrDefault(arguments.PicturePath);
 
 			visual.BindingGeneric.AppLogoOverride = new ToastGenericAppLogo()
 			{
@@ -64,6 +62,36 @@ namespace AppVNext.Notifier
 				HintCrop = ToastGenericAppLogoCrop.Circle
 			};
 
+			// Construct the actions for the toast (inputs and buttons)
+
+			var actions = new ToastActionsCustom();
+
+			// Add any inputs
+			foreach (var input in arguments.Inputs)
+			{
+				actions.Inputs.Add(
+					new ToastTextBox(input.Id)
+					{
+						Title = input.Title,
+						PlaceholderContent = input.PlaceHolderText
+					});
+			}
+
+			// Add any buttons
+			foreach (var button in arguments.Buttons)
+			{
+				actions.Buttons.Add(
+					new ToastButton(button.Text, new QueryString()
+					{
+						{ "Notification ID", arguments.NotificationId },
+						{ "Button ID", button.Id },
+						{ "Arguments", button.Arguments }
+					}.ToString())
+					{
+						ActivationType = ToastActivationType.Background
+					});
+			}
+			
 			//Set the audio
 			ToastAudio audio = null;
 			if (!string.IsNullOrWhiteSpace(arguments.WindowsSound) || !string.IsNullOrWhiteSpace(arguments.SoundPath))
@@ -90,6 +118,7 @@ namespace AppVNext.Notifier
 			var toastContent = new ToastContent()
 			{
 				Visual = visual,
+				Actions = actions,
 				Audio = audio
 			};
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace AppVNext.Notifier.Common
 {
@@ -24,6 +26,11 @@ namespace AppVNext.Notifier.Common
 		public bool NotificationsCheck { get; set; }
 		public string NotificationCheckAppId { get; set; }
 		public bool PushNotificationCheck { get; set; }
+		public Button[] Buttons { get; set; }
+		public Input[] Inputs { get; set; }
+		public string Image { get; set; }
+		public bool ClearNotifications { get; set; }
+		public bool VersionInformation { get; set; }
 
 		/// <summary>
 		/// Check if the arguments are valid or not.

@@ -14,8 +14,12 @@
 		/// </summary>
 		WindowsDesktop = 0,
 		/// <summary>
-		/// UWP Application
+		/// UWP Native Application
 		/// </summary>
-		UniversalWindowsPlatform = 1
+		UwpNative = 1,
+		/// <summary>
+		/// UWP Console Application
+		/// </summary>
+		UwpConsole = 2
 	}
 }

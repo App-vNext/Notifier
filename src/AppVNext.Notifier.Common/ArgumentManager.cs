@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -49,7 +50,7 @@ namespace AppVNext.Notifier.Common
 					//Register application
 					case "r":
 					case "register":
-						if (Globals.ApplicationType == ApplicationTypes.WindowsDesktop)
+						if (Globals.IsWindowsDesktopApp)
 						{
 							if (i + 2 < args.Length)
 							{
@@ -114,7 +115,7 @@ namespace AppVNext.Notifier.Common
 					//Duration
 					case "d":
 					case "duration":
-						if (Globals.ApplicationType == ApplicationTypes.WindowsDesktop)
+						if (Globals.IsWindowsDesktopApp)
 						{
 							if (i + 1 < args.Length)
 							{
@@ -195,6 +196,82 @@ namespace AppVNext.Notifier.Common
 						}
 						break;
 
+					//Logo
+					case "l":
+					case "wallpaper":
+						if (i + 1 < args.Length)
+						{
+							arguments.Image = args[i + 1];
+							skipLoop = 1;
+						}
+						else
+						{
+							arguments.Errors += Globals.HelpForWallpaper;
+						}
+						break;
+
+					//Buttons
+					case "b":
+					case "buttons":
+						if (Globals.IsUwpApp)
+						{
+							if (i + 1 < args.Length)
+							{
+								Button[] buttons = null;
+								try
+								{
+									buttons = JsonConvert.DeserializeObject<Button[]>(args[i + 1]);
+									arguments.Buttons = buttons;
+								}
+								catch (Exception ex)
+								{
+									arguments.Errors += $"Error: {ex.Message}{Globals.NewLine}{Globals.NewLine}{Globals.HelpForButtons}{Globals.NewLine}";
+								}
+
+								skipLoop = 1;
+							}
+							else
+							{
+								arguments.Errors += Globals.HelpForButtons;
+							}
+						}
+						else
+						{
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
+						}
+						break;
+
+					//Inputs
+					case "i":
+					case "inputs":
+						if (Globals.IsUwpApp)
+						{
+							if (i + 1 < args.Length)
+							{
+								Input[] inputs = null;
+								try
+								{
+									inputs = JsonConvert.DeserializeObject<Input[]>(args[i + 1]);
+									arguments.Inputs = inputs;
+								}
+								catch (Exception ex)
+								{
+									arguments.Errors += $"Error: {ex.Message}{Globals.NewLine}{Globals.NewLine}{Globals.HelpForInputs}{Globals.NewLine}";
+								}
+
+								skipLoop = 1;
+							}
+							else
+							{
+								arguments.Errors += Globals.HelpForButtons;
+							}
+						}
+						else
+						{
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
+						}
+						break;
+
 					//Close
 					case "close":
 						if (i + 1 < args.Length)
@@ -221,9 +298,29 @@ namespace AppVNext.Notifier.Common
 							arguments.Errors += Globals.HelpForNotificationsCheck;
 						}
 						break;
+
 					//Push Notification Status
 					case "k":
 						arguments.PushNotificationCheck = true;
+						break;
+
+					//Clear Notifications
+					case "v":
+					case "version":
+						arguments.VersionInformation = true;
+						break;
+
+					//Version information
+					case "c":
+					case "clear":
+						if (Globals.IsUwpApp)
+						{
+							arguments.ClearNotifications = true;
+						}
+						else
+						{
+							arguments.Errors += string.Format(Globals.HelpForInvalidArgument, args[i]);
+						}
 						break;
 
 					default:

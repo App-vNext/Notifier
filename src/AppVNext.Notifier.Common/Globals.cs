@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,9 +21,41 @@ namespace AppVNext.Notifier.Common
 		/// </summary>
 		public static ApplicationTypes ApplicationType { get; set; }
 
-		public static string DefaultIcon = ApplicationType == ApplicationTypes.WindowsDesktop 
-			? $"{Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icon.ico")}"
-			: "ms-appdata:///local/Icon.ico";
+		public static string GetVersionInformation()
+		{
+			var assembly = Assembly.GetEntryAssembly();
+			var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+			return $"{versionInfo.FileDescription}{NewLine}" +
+					$"{versionInfo.Comments}{NewLine}" +
+					$"{versionInfo.InternalName}. Version {versionInfo.FileVersion} ({ApplicationType.ToString()}){NewLine}" +
+					$"{versionInfo.CompanyName}{NewLine}" +
+					$"{versionInfo.LegalCopyright}";
+		}
+
+		public static string GetImageOrDefault(string picturePath)
+		{
+			return string.IsNullOrWhiteSpace(picturePath) ? GetDefaultIcon() : "file:///" + picturePath;
+		}
+
+		public static bool IsWindowsDesktopApp { get { return ApplicationType == ApplicationTypes.WindowsDesktop; } }
+		public static bool IsUwpApp { get { return ApplicationType == ApplicationTypes.UwpNative || ApplicationType == ApplicationTypes.UwpConsole; } }
+
+		public static string GetDefaultIcon()
+		{
+			string icon = null;
+			switch (ApplicationType)
+			{
+				case ApplicationTypes.WindowsDesktop:
+				case ApplicationTypes.UwpConsole:
+					icon = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icon.ico");					
+					break;
+				case ApplicationTypes.UwpNative:
+					icon = "ms-appx:///Assets/Icon.ico";
+					break;
+			}
+
+			return icon;
+		}
 
 		//General
 		public static readonly string NewLine = Environment.NewLine;
@@ -60,6 +93,14 @@ namespace AppVNext.Notifier.Common
 			$"Argument -appID requires 1 value: <appID string>.{NewLine}" +
 			$"Example: -appID \"com.appvnext.windows-notifier\"{NewLine}";
 
+		public static readonly string HelpForButtons =
+			$"Argument -b requires 1 value: <json string>.{NewLine}" +
+			$"Example: -b \"[{{'id':'button1', 'text':'Button 1'}}, {{'id':'button2','text':'Button 2'}}]\"{NewLine}";
+
+		public static readonly string HelpForInputs =
+			$"Argument -i requires 1 value: <json string>.{NewLine}" +
+			$"Example: -i \"[{{'id':'input1', 'title':'Input 1', 'placeholdertext':'Enter value'}}, {{'id':'input2', 'title':'Input 2', 'placeholdertext':'Enter value'}}]\"{NewLine}";
+
 		public static readonly string HelpForClose =
 			$"Argument -close requires 1 value: <ID string>.{NewLine}" +
 			$"Example: -close \"12345\"{NewLine}";
@@ -71,6 +112,10 @@ namespace AppVNext.Notifier.Common
 		public static readonly string HelpForDuration =
 			$"Argument -d requires 1 value: <short|long>.{NewLine}" +
 			$"Example: -d \"long\"{NewLine}";
+
+		public static readonly string HelpForWallpaper =
+			$"Argument -l requires 1 value: <image URI>.{NewLine}" +
+			$"Example: -l \"C:\\Pictures\\Picture.png\"{NewLine}";
 
 		public static readonly string HelpForInvalidArgument =
 			$"Argument '{{0}}' is invalid.{NewLine}";
@@ -93,23 +138,30 @@ namespace AppVNext.Notifier.Common
 			$"Create a send notifications.{NewLine}{NewLine}" +
 			$"Usage: notifier <command>{NewLine}{NewLine}" +
 			$"Commands:{NewLine}{NewLine}" +
-			(ApplicationType == ApplicationTypes.WindowsDesktop ? 
+			(IsWindowsDesktopApp ? 
 			$"[-r] <appId string><appName string>	Registers notifier into the Windows machine.{NewLine}" : string.Empty) +
 			$"[-t] <title string>			Title is displayed on the first line of the notification.{NewLine}" +
 			$"[-m] <message string>			Message is displayed wrapped below the title of the notification.{NewLine}" +
-			$"[-p] <image URI>			URI for a picture file to be displayed with the notification. Local files only. {NewLine}" +
+			$"[-p] <image URI>			URI for a picture file to be displayed with the notification. {NewLine}" +
 			$"[-w]					Wait for notification to expire or activate.{NewLine}" +
 			$"[-id] <id string>			Sets the ID of the toast notification to be able to close it.{NewLine}" +
 			$"[-s] [<sound URI>][<Windows sound>]	URI for a sound file or Windows sound to play when the notification displays.{NewLine}" +
 			$"					For possible Windows sound values visit http://msdn.microsoft.com/en-us/library/windows/apps/hh761492.aspx.{NewLine}" +
 			$"[-silent]				Does not play a sound when showing the notification.{NewLine}" +
-			(ApplicationType == ApplicationTypes.WindowsDesktop ?
+			(IsWindowsDesktopApp ?
 			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" : string.Empty) +
 			$"[-appID] <appID string>			Used to display the notification.{NewLine}" +
+			(IsUwpApp ?
+			$"[-i] <ID string, Text string, Place Holder Text string>			Display inputs.{NewLine}" : string.Empty) +
+			(IsUwpApp ?
+			$"[-b] <ID string, Text string>			Display buttons.{NewLine}" : string.Empty) +
+			(IsUwpApp ?
+			$"[-l] <image URI>			URI for a picture file to be displayed with the notification.{NewLine}" : string.Empty) +
 			$"[-n] <appID string>			Returns Notifications setting status for the application. Return values: Enabled, Disabled or Unknown.{NewLine}" +
 			$"[-k]					Returns Notifications setting status for the system. Return values: Enabled or Disabled.{NewLine}" +
 			$"[-close] <ID string>			Closes notification. In order to be able to close a notification,{NewLine}" +
 			$"					the parameter -w must be used to create the notification.{NewLine}" +
+			$"[-v]					Displays version information.{NewLine}" +
 			$"[-?]					Displays this help.{NewLine}" +
 			$"[-help]					Displays this help.{NewLine}" +
 			$"Exit Codes:				Failed -1, Success 0, Close 1, Dismiss 2, Timeout 3.{NewLine}{NewLine}" +
@@ -118,7 +170,7 @@ namespace AppVNext.Notifier.Common
 			$"notifier -t \"Notification Title\" -m \"Notification message.\"{NewLine}" +
 			$"notifier help{NewLine}" +
 			$"notifier ?{NewLine}" +
-			(ApplicationType == ApplicationTypes.WindowsDesktop ?
+			(IsUwpApp ?
 			$"notifier register com.appvnext.windows-notifier appvnext-windows-notifier{NewLine}" : string.Empty) +
 			$"{NewLine}";
 	}

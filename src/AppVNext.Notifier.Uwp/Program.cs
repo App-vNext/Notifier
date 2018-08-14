@@ -17,7 +17,7 @@ namespace AppVNext.Notifier.Uwp
 		static void Main(string[] args)
 		{
 			//Initialize application type. TODO: Replace this with dependency injection.
-			Globals.ApplicationType = ApplicationTypes.UniversalWindowsPlatform;
+			Globals.ApplicationType = ApplicationTypes.UwpNative;
 
 			//RegisterBackgroundTask();
 

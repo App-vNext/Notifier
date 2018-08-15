@@ -25,6 +25,9 @@ namespace AppVNext.Notifier
 		/// <param name="args">Arguments for the notification.</param>
 		static void Main(string[] args)
 		{
+			//Initialize application type. TODO: Replace this with dependency injection.
+			Globals.ApplicationType = ApplicationTypes.UwpConsole;
+
 			// Register AUMID, COM server, and activator
 			DesktopNotificationManagerCompat.RegisterAumidAndComServer<NotifierActivator>("BraveAdsNotifier");
 			DesktopNotificationManagerCompat.RegisterActivator<NotifierActivator>();
@@ -36,9 +39,6 @@ namespace AppVNext.Notifier
 			}
 			else
 			{
-				//Initialize application type. TODO: Replace this with dependency injection.
-				Globals.ApplicationType = ApplicationTypes.UwpConsole;
-
 				var arguments = ArgumentManager.ProcessArguments(args);
 
 				if (arguments == null)

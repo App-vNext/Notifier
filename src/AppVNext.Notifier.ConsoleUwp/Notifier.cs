@@ -43,7 +43,16 @@ namespace AppVNext.Notifier
 					}
 				}
 			};
-			
+
+			//Set the attribution text
+			if (!string.IsNullOrWhiteSpace(arguments.AttributionText))
+			{
+				visual.BindingGeneric.Attribution = new ToastGenericAttributionText()
+				{
+					Text = arguments.AttributionText
+				};
+			}
+
 			//Set the logo override
 			var imagePath = Globals.GetImageOrDefault(arguments.PicturePath);
 			var isInternetImage = IsInternetImage(imagePath);

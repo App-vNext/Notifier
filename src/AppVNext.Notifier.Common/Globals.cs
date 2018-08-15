@@ -133,12 +133,18 @@ namespace AppVNext.Notifier.Common
 		public static readonly string HelpForRegisterFail =
 			$"The application shortcut for '{{0}}' '{{1}}' already existed.{NewLine}";
 
+		public static readonly string HelpForAttributionText =
+			$"Argument -a requires 1 value: <text string>.{NewLine}" +
+			$"Example: -a \"Via SMS\"{NewLine}";
+
 		//Help text
-		public static readonly string HelpText =
+		public static string GetHelpText()
+		{
+			return
 			$"Create a send notifications.{NewLine}{NewLine}" +
 			$"Usage: notifier <command>{NewLine}{NewLine}" +
 			$"Commands:{NewLine}{NewLine}" +
-			(IsWindowsDesktopApp ? 
+			(IsWindowsDesktopApp ?
 			$"[-r] <appId string><appName string>	Registers notifier into the Windows machine.{NewLine}" : string.Empty) +
 			$"[-t] <title string>			Title is displayed on the first line of the notification.{NewLine}" +
 			$"[-m] <message string>			Message is displayed wrapped below the title of the notification.{NewLine}" +
@@ -152,18 +158,20 @@ namespace AppVNext.Notifier.Common
 			$"[-d] <short|long>			Determines how long to display the notification for. Default is 'short'.{NewLine}" : string.Empty) +
 			$"[-appID] <appID string>			Used to display the notification.{NewLine}" +
 			(IsUwpApp ?
-			$"[-i] <ID string, Text string, Place Holder Text string>			Display inputs.{NewLine}" : string.Empty) +
-			(IsUwpApp ?
-			$"[-b] <ID string, Text string>			Display buttons.{NewLine}" : string.Empty) +
-			(IsUwpApp ?
 			$"[-l] <image URI>			URI for a picture file to be displayed with the notification.{NewLine}" : string.Empty) +
 			$"[-n] <appID string>			Returns Notifications setting status for the application. Return values: Enabled, Disabled or Unknown.{NewLine}" +
 			$"[-k]					Returns Notifications setting status for the system. Return values: Enabled or Disabled.{NewLine}" +
+			(IsUwpApp ?
+			$"[-b] <ID string, Text string>		Display buttons.{NewLine}" : string.Empty) +
+			(IsUwpApp ?
+			$"[-i] <ID string, Text string,{NewLine}      Place Holder Text string>		Display inputs.{NewLine}" : string.Empty) +
 			$"[-close] <ID string>			Closes notification. In order to be able to close a notification,{NewLine}" +
 			$"					the parameter -w must be used to create the notification.{NewLine}" +
+			(IsUwpApp ?
+			$"[-a] <text string>			Attribution text is displayed at the bottom of the notification.{NewLine}" : string.Empty) +
 			$"[-v]					Displays version information.{NewLine}" +
 			$"[-?]					Displays this help.{NewLine}" +
-			$"[-help]					Displays this help.{NewLine}" +
+			$"[-help]					Displays this help.{NewLine}{NewLine}" +
 			$"Exit Codes:				Failed -1, Success 0, Close 1, Dismiss 2, Timeout 3.{NewLine}{NewLine}" +
 			$"Examples:{NewLine}{NewLine}" +
 			$"notifier -t \"Hello World!\"{NewLine}" +
@@ -173,5 +181,6 @@ namespace AppVNext.Notifier.Common
 			(IsUwpApp ?
 			$"notifier register com.appvnext.windows-notifier appvnext-windows-notifier{NewLine}" : string.Empty) +
 			$"{NewLine}";
+		}
 	}
 }

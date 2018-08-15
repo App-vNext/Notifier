@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-		<Product Id="*" Name="App vNext Notifier" Language="1033" Version="1.0.1.0" Manufacturer="App vNext" UpgradeCode="8A94A82A-4E79-4750-A2B7-0852E4C14257">
+		<Product Id="*" Name="App vNext Notifier" Language="1033" Version="1.0.1.0" Manufacturer="Brave Software" UpgradeCode="18329033-0696-4365-9233-ACC27548DFA2">
 				<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 				<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -26,13 +26,13 @@
 
 		<Fragment>
 				<DirectoryRef Id="ProgramMenuFolder">
-						<Component Id="ApplicationShortcut" Guid="001F04A4-6BE8-4840-BC1B-AA6335D4AD8E">
+						<Component Id="ApplicationShortcut" Guid="3EEFDA65-72FC-42BB-ADE1-79F037D772EA">
 								<Shortcut Id="ApplicationStartMenuShortcut" Name="App vNext Notifier" Description="Command line tool to send Windows Toast Notifications." Target="[INSTALLFOLDER]notifier.exe" WorkingDirectory="INSTALLFOLDER">
 										<!--AUMID-->
 										<ShortcutProperty Key="System.AppUserModel.ID" Value="AppVNextNotifier"/>
 
 										<!--COM CLSID, specifying which CLSID to activate when toast clicked-->
-										<ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{69684589-9DC2-46C6-B023-F29BF6B4FA5F}"/>
+										<ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{4F5B934E-27C6-4AB6-A5EF-C3C71770E1A7}"/>
 								</Shortcut>
 
 								<RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="App vNext Notifier" On="uninstall"/>
@@ -43,32 +43,28 @@
 
 		<Fragment>
 				<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-						<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-						<!-- <Component Id="ProductComponent"> -->
-						<!-- TODO: Insert files, registry keys, and other resources here. -->
-						<!-- </Component> -->
-						<Component Id="notifier.exe" Guid="0B35CD80-B36A-4870-8BA8-C70C43845665">
+						<Component Id="notifier.exe" Guid="E4F3D3E8-299B-4033-BC41-88EAB2FC63EC">
 								<File Id="notifier.exe" Name="notifier.exe" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)notifier.exe"/>
 						</Component>
 						<Component Id="Microsoft.Toolkit.Uwp.Notifications.dll" Guid="fd08f63d-48d6-4bac-a3d4-f788af135ae7">
 								<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Name="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)Microsoft.Toolkit.Uwp.Notifications.dll"/>
 						</Component>
-						<Component Id="QueryString.NETCore.dll" Guid="16817a82-b30c-4cc6-acf4-a68055c6016a">
+						<Component Id="QueryString.NETCore.dll" Guid="EE9D2B28-9CE5-4676-BFB7-E0C4F6A79488">
 								<File Id="QueryString.NETCore.dll" Name="QueryString.NETCore.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)QueryString.NETCore.dll"/>
 						</Component>
-						<Component Id="System.Xml.ReaderWriter.dll" Guid="79cb87d7-96c9-4d21-915b-8472963b195f">
+						<Component Id="System.Xml.ReaderWriter.dll" Guid="5977365c-8e53-458e-ada3-b98665a4d780">
 								<File Id="System.Xml.ReaderWriter.dll" Name="System.Xml.ReaderWriter.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)System.Xml.ReaderWriter.dll"/>
 						</Component>
-					<Component Id="Newtonsoft.Json.dll" Guid="A66E84E7-2D6F-41DF-B7FF-EC78A0877F3B">
+					<Component Id="Newtonsoft.Json.dll" Guid="006972b7-31a4-4510-81c9-091b2080760b">
 						<File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)Newtonsoft.Json.dll"/>
 					</Component>
 					<Component Id="AppVNext.Notifier.Common.dll" Guid="F6B68971-CFB9-41F6-B5EF-E6115E746CE3">
 						<File Id="AppVNext.Notifier.Common.dll" Name="AppVNext.Notifier.Common.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)AppVNext.Notifier.Common.dll"/>
 					</Component>
-					<Component Id="Microsoft.Win32.Registry.dll" Guid="57A7C0CF-5B39-402B-8AFF-78E54B9E4E54">
+					<Component Id="Microsoft.Win32.Registry.dll" Guid="67ee5b4e-5c23-4606-88e9-a869f2e387fd">
 						<File Id="Microsoft.Win32.Registry.dll" Name="Microsoft.Win32.Registry.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)Microsoft.Win32.Registry.dll"/>
 					</Component>
-					<Component Id="Icon.ico" Guid="4A45F895-141F-4256-893E-01C453D63189">
+					<Component Id="Icon.ico" Guid="e0cb52ae-dd08-45f8-907b-2259de298425">
 						<File Id="Icon.ico" Name="Icon.ico" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)Icon.ico"/>
 					</Component>
 					

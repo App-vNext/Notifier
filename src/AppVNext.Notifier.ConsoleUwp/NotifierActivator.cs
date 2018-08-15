@@ -21,7 +21,7 @@ namespace AppVNext.Notifier
 	// This GUID should be unique and match the System.AppUserModel.ToastActivatorCLSID in the installer.
 	[ClassInterface(ClassInterfaceType.None)]
 	[ComSourceInterfaces(typeof(INotificationActivationCallback))]
-	[Guid("69684589-9DC2-46C6-B023-F29BF6B4FA5F"), ComVisible(true)]
+	[Guid("4F5B934E-27C6-4AB6-A5EF-C3C71770E1A7"), ComVisible(true)]
 	public class NotifierActivator : NotificationActivator
 	{
 		public override void OnActivated(string arguments, NotificationUserInput userInput, string appUserModelId)

@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("App vNext UWP Notifier")]
+[assembly: AssemblyTitle("Brave Software UWP Notifier")]
 [assembly: AssemblyDescription("Command line tool to send Windows Toast Notifications.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("App vNext")]
+[assembly: AssemblyCompany("Brave Software")]
 [assembly: AssemblyProduct("UWP Notifier")]
 [assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]

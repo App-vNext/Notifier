@@ -181,7 +181,7 @@ namespace AppVNext.Notifier
 					return httpImage;
 				}
 
-				var directory = Directory.CreateDirectory(Path.GetTempPath() + "AppVNextNotifierImages");
+				var directory = Directory.CreateDirectory(Path.GetTempPath() + "BraveAdsNotifierImages");
 
 				if (!_hasPerformedCleanup)
 				{

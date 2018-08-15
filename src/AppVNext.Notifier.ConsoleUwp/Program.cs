@@ -26,7 +26,7 @@ namespace AppVNext.Notifier
 		static void Main(string[] args)
 		{
 			// Register AUMID, COM server, and activator
-			DesktopNotificationManagerCompat.RegisterAumidAndComServer<NotifierActivator>("AppVNextNotifier");
+			DesktopNotificationManagerCompat.RegisterAumidAndComServer<NotifierActivator>("BraveAdsNotifier");
 			DesktopNotificationManagerCompat.RegisterActivator<NotifierActivator>();
 
 			// If launched from a toast notification

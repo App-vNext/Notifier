@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-		<Product Id="*" Name="App vNext Notifier" Language="1033" Version="1.0.1.0" Manufacturer="Brave Software" UpgradeCode="18329033-0696-4365-9233-ACC27548DFA2">
+		<Product Id="*" Name="Brave Ads Notifier" Language="1033" Version="1.0.1.0" Manufacturer="Brave Software" UpgradeCode="18329033-0696-4365-9233-ACC27548DFA2">
 				<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 				<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 				<MediaTemplate EmbedCab="yes" />
 
-				<Feature Id="ProductFeature" Title="App vNext Notifier" Level="1">
+				<Feature Id="ProductFeature" Title="Brave Ads Notifier" Level="1">
 						<ComponentGroupRef Id="ProductComponents" />
 				</Feature>
 
@@ -17,7 +17,7 @@
 		<Fragment>
 				<Directory Id="TARGETDIR" Name="SourceDir">
 						<Directory Id="ProgramFilesFolder">
-								<Directory Id="INSTALLFOLDER" Name="App vNext Notifier" />
+								<Directory Id="INSTALLFOLDER" Name="Brave Ads Notifier" />
 						</Directory>
 						<Directory Id="ProgramMenuFolder">
 						</Directory>
@@ -27,16 +27,16 @@
 		<Fragment>
 				<DirectoryRef Id="ProgramMenuFolder">
 						<Component Id="ApplicationShortcut" Guid="3EEFDA65-72FC-42BB-ADE1-79F037D772EA">
-								<Shortcut Id="ApplicationStartMenuShortcut" Name="App vNext Notifier" Description="Command line tool to send Windows Toast Notifications." Target="[INSTALLFOLDER]notifier.exe" WorkingDirectory="INSTALLFOLDER">
+								<Shortcut Id="ApplicationStartMenuShortcut" Name="Brave Ads Notifier" Description="Command line tool to send Windows Toast Notifications." Target="[INSTALLFOLDER]notifier.exe" WorkingDirectory="INSTALLFOLDER">
 										<!--AUMID-->
-										<ShortcutProperty Key="System.AppUserModel.ID" Value="AppVNextNotifier"/>
+										<ShortcutProperty Key="System.AppUserModel.ID" Value="BraveAdsNotifier"/>
 
 										<!--COM CLSID, specifying which CLSID to activate when toast clicked-->
 										<ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{4F5B934E-27C6-4AB6-A5EF-C3C71770E1A7}"/>
 								</Shortcut>
 
-								<RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="App vNext Notifier" On="uninstall"/>
-								<RegistryValue Root="HKCU" Key="Software\App vNext Notifier" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+								<RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="Brave Ads Notifier" On="uninstall"/>
+								<RegistryValue Root="HKCU" Key="Software\Brave Ads Notifier" Name="installed" Type="integer" Value="1" KeyPath="yes" />
 						</Component>
 				</DirectoryRef>
 		</Fragment>

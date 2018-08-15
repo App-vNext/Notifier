@@ -133,6 +133,10 @@ namespace AppVNext.Notifier.Common
 		public static readonly string HelpForRegisterFail =
 			$"The application shortcut for '{{0}}' '{{1}}' already existed.{NewLine}";
 
+		public static readonly string HelpForAttributionText =
+			$"Argument -a requires 1 value: <text string>.{NewLine}" +
+			$"Example: -a \"Via SMS\"{NewLine}";
+
 		//Help text
 		public static readonly string HelpText =
 			$"Create a send notifications.{NewLine}{NewLine}" +
@@ -161,6 +165,8 @@ namespace AppVNext.Notifier.Common
 			$"[-k]					Returns Notifications setting status for the system. Return values: Enabled or Disabled.{NewLine}" +
 			$"[-close] <ID string>			Closes notification. In order to be able to close a notification,{NewLine}" +
 			$"					the parameter -w must be used to create the notification.{NewLine}" +
+			(IsUwpApp ?
+			$"[-a] <text string>			Attribution text is displayed at the bottom of the notification.{NewLine}" : string.Empty) +
 			$"[-v]					Displays version information.{NewLine}" +
 			$"[-?]					Displays this help.{NewLine}" +
 			$"[-help]					Displays this help.{NewLine}" +

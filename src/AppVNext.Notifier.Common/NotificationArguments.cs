@@ -31,6 +31,7 @@ namespace AppVNext.Notifier.Common
 		public string Image { get; set; }
 		public bool ClearNotifications { get; set; }
 		public bool VersionInformation { get; set; }
+		public string AttributionText { get; set; }
 
 		/// <summary>
 		/// Check if the arguments are valid or not.

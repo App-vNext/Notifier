@@ -304,6 +304,19 @@ namespace AppVNext.Notifier.Common
 						arguments.PushNotificationCheck = true;
 						break;
 
+					//Attribution Text
+					case "a":
+						if (i + 1 < args.Length)
+						{
+							arguments.AttributionText = args[i + 1];
+							skipLoop = 1;
+						}
+						else
+						{
+							arguments.Errors += Globals.HelpForAttributionText;
+						}
+						break;
+
 					//Clear Notifications
 					case "v":
 					case "version":

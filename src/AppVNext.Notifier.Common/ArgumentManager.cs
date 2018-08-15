@@ -368,7 +368,7 @@ namespace AppVNext.Notifier.Common
 
 		public static void DisplayHelp()
 		{
-			WriteLine(Globals.HelpText);
+			WriteLine(Globals.GetHelpText());
 		}
 	}
 }

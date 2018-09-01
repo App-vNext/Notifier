@@ -10,6 +10,7 @@ using Microsoft.QueryStringDotNET;
 using Windows.Data.Xml.Dom;
 using DesktopNotifications;
 using System.IO;
+using System.Net.Http;
 
 namespace AppVNext.Notifier
 {
@@ -190,31 +191,31 @@ namespace AppVNext.Notifier
 					return httpImage;
 				}
 
-				var directory = Directory.CreateDirectory(Path.GetTempPath() + "BraveAdsNotifierImages");
+				var imagesDirectory = Directory.CreateDirectory(Path.GetTempPath() + "BraveAdsNotifierImages");
 
 				if (!_hasPerformedCleanup)
 				{
 					_hasPerformedCleanup = true;
 
-					foreach (var d in directory.EnumerateDirectories())
+					foreach (var directory in imagesDirectory.EnumerateDirectories())
 					{
-						if (d.CreationTimeUtc.Date < DateTime.UtcNow.Date.AddDays(-3))
+						if (directory.CreationTimeUtc.Date < DateTime.UtcNow.Date.AddDays(-3))
 						{
-							d.Delete(true);
+							directory.Delete(true);
 						}
 					}
 				}
 
-				var dayDirectory = directory.CreateSubdirectory(DateTime.UtcNow.Day.ToString());
-				string imagePath = dayDirectory.FullName + "\\" + (uint)httpImage.GetHashCode();
+				var dayDirectory = imagesDirectory.CreateSubdirectory(DateTime.UtcNow.Day.ToString());
+				var imagePath = dayDirectory.FullName + "\\" + (uint)httpImage.GetHashCode();
 
 				if (File.Exists(imagePath))
 				{
 					return imagePath;
 				}
 
-				System.Net.Http.HttpClient c = new System.Net.Http.HttpClient();
-				using (var stream = await c.GetStreamAsync(httpImage))
+				var httpClient = new HttpClient();
+				using (var stream = await httpClient.GetStreamAsync(httpImage))
 				{
 					using (var fileStream = File.OpenWrite(imagePath))
 					{
@@ -224,7 +225,10 @@ namespace AppVNext.Notifier
 
 				return imagePath;
 			}
-			catch { return ""; }
+			catch
+			{
+				return string.Empty;
+			}
 		}
 	}
 }

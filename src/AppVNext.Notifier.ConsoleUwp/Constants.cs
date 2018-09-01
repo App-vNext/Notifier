@@ -14,6 +14,6 @@ namespace AppVNext.Notifier
 		/// <summary>
 		/// Used to temporarily save files downloaded files.
 		/// </summary>
-		public const string ImagesFolder = "BraveAdsNotifierImages";
+		public const string ImagesFolder = "AppvNextNotifierImages";
 	}
 }

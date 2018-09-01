@@ -190,7 +190,7 @@ namespace AppVNext.Notifier
 					return httpImage;
 				}
 
-				var directory = Directory.CreateDirectory(Path.GetTempPath() + "AppVNextNotifierImages");
+				var imagesDirectory = Directory.CreateDirectory(Path.GetTempPath() + Constants.ImagesFolder);
 
 				if (!_hasPerformedCleanup)
 				{

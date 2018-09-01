@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9EBF043A-3FF8-46CB-A204-3E3BDF35ED49}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AppVNext.Notifier.ConsoleUwp</RootNamespace>
+    <RootNamespace>AppVNext.Notifier</RootNamespace>
     <AssemblyName>notifier</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -136,6 +136,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="DesktopNotificationManagerCompat.cs" />
     <Compile Include="NotifierActivator.cs" />
     <Compile Include="NotificationEvents.cs" />

@@ -186,6 +186,20 @@ namespace AppVNext.Notifier
 		{
 			try
 			{
+				// Ignore if image url is not served using SSL.
+				var uri = new Uri(httpImage);
+				if (uri.Scheme.ToLower() != "https")
+				{
+					return null;
+				}
+
+				// Ignore if image url doesn't start with correct prefix.
+				var fileName = Path.GetFileName(uri.LocalPath);
+				if (fileName.IndexOf(Constants.ImagePrefix, StringComparison.CurrentCultureIgnoreCase) == -1)
+				{
+					return null;
+				}
+
 				if (DesktopNotificationManagerCompat.CanUseHttpImages)
 				{
 					return httpImage;
@@ -227,7 +241,7 @@ namespace AppVNext.Notifier
 			}
 			catch
 			{
-				return string.Empty;
+				return null;
 			}
 		}
 	}

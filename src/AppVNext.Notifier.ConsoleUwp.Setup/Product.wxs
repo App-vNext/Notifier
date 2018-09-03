@@ -37,6 +37,7 @@
 
 								<RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="Brave Ads Notifier" On="uninstall"/>
 								<RegistryValue Root="HKCU" Key="Software\Brave Ads Notifier" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+								<RegistryValue Root="HKCU" Key="Software\Brave Ads Notifier" Name="date" Type="string" Value="[Date] [Time]" KeyPath="no" />
 						</Component>
 				</DirectoryRef>
 		</Fragment>

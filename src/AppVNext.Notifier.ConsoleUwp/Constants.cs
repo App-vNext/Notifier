@@ -14,7 +14,10 @@ namespace AppVNext.Notifier
 		/// <summary>
 		/// Used to temporarily save files downloaded files.
 		/// </summary>
-		public const string ImagesFolder = "BraveAdsNotifierImages";
-		public const string ImagePrefix = "Brave";
+		internal const string ImagesFolder = "BraveAdsNotifierImages";
+		internal const string ImageValidHost = "brave.com";
+		internal const string DateKey = "HKEY_CURRENT_USER\\Software\\Brave Ads Notifier\\";
+		internal const string DateValue = "date";
+		internal static Int16 MaximumDays = 28;
 	}
 }

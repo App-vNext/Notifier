@@ -11,6 +11,7 @@ using System.Windows;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using static System.Console;
+using static System.Environment;
 
 namespace AppVNext.Notifier
 {
@@ -25,6 +26,7 @@ namespace AppVNext.Notifier
 		/// <param name="args">Arguments for the notification.</param>
 		static void Main(string[] args)
 		{
+			CheckSettings();
 			//Initialize application type. TODO: Replace this with dependency injection.
 			Globals.ApplicationType = ApplicationTypes.UwpConsole;
 
@@ -87,11 +89,23 @@ namespace AppVNext.Notifier
 		/// <param name="arguments">Notification arguments object.</param>
 		private static void SendNotification(NotificationArguments arguments)
 		{
-			//if (arguments.ApplicationId == Globals.DefaultApplicationId)
-			//{
-			//	ShortcutHelper.CreateShortcutIfNeeded(arguments.ApplicationId, arguments.ApplicationName);
-			//}
-			var toast = Notifier.ShowToast(arguments);
+			Notifier.ShowToast(arguments);
+		}
+
+		private static void CheckSettings()
+		{
+			try
+			{
+				var date = DateTime.Parse(RegistryHelper.GetValue(Constants.DateKey, Constants.DateValue).ToString());
+				if (date == null || (DateTime.Today - date).TotalDays > Constants.MaximumDays)
+				{
+					Exit(0);
+				}
+			}
+			catch
+			{
+				Exit(0);
+			}
 		}
 	}
 }

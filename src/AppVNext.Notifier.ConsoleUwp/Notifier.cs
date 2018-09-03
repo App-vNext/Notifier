@@ -11,6 +11,7 @@ using Windows.Data.Xml.Dom;
 using DesktopNotifications;
 using System.IO;
 using System.Net.Http;
+using System.Net;
 
 namespace AppVNext.Notifier
 {
@@ -57,7 +58,7 @@ namespace AppVNext.Notifier
 			//Set the logo override
 			var imagePath = Globals.GetImageOrDefault(arguments.PicturePath);
 			var isInternetImage = IsInternetImage(imagePath);
-			var imageSource = isInternetImage ? await DownloadImageToDisk(imagePath) : imagePath;
+			var imageSource = isInternetImage ? DownloadImage(imagePath) : imagePath;
 
 			visual.BindingGeneric.AppLogoOverride = new ToastGenericAppLogo()
 			{
@@ -69,7 +70,7 @@ namespace AppVNext.Notifier
 			if (!string.IsNullOrWhiteSpace(arguments.Image))
 			{
 				isInternetImage = IsInternetImage(arguments.Image);
-				imageSource = isInternetImage ? await DownloadImageToDisk(arguments.Image) : arguments.Image;
+				imageSource = isInternetImage ? DownloadImage(arguments.Image) : arguments.Image;
 
 				visual.BindingGeneric.Children.Add(new AdaptiveImage()
 				{
@@ -181,67 +182,65 @@ namespace AppVNext.Notifier
 			return image.ToLower().StartsWith("http") || image.ToLower().StartsWith("https");
 		}
 
-		private static bool _hasPerformedCleanup;
-		private static async Task<string> DownloadImageToDisk(string httpImage)
+		private static bool isCacheCleared;
+		private static string DownloadImage(string imageUrl)
 		{
 			try
 			{
-				// Ignore if image url is not served using SSL.
-				var uri = new Uri(httpImage);
-				if (uri.Scheme.ToLower() != "https")
+				// Ignore if image URL is not served using SSL.
+				var imageUri = new Uri(imageUrl);
+				if (imageUri.Scheme.ToLower() != "https")
 				{
-					return null;
+					return string.Empty;
 				}
 
-				// Ignore if image url doesn't start with correct prefix.
-				var fileName = Path.GetFileName(uri.LocalPath);
-				if (fileName.IndexOf(Constants.ImagePrefix, StringComparison.CurrentCultureIgnoreCase) == -1)
+				// Ignore if image is not hosted .
+				if (imageUri.Host.IndexOf(Constants.ImageValidHost, StringComparison.CurrentCultureIgnoreCase) == -1)
 				{
-					return null;
+					return string.Empty;
 				}
 
+				// Return image URL if they are allowed.
 				if (DesktopNotificationManagerCompat.CanUseHttpImages)
 				{
-					return httpImage;
+					return imageUrl;
 				}
 
+				// Clear cache if it hasn't been cleared.
 				var imagesDirectory = Directory.CreateDirectory(Path.GetTempPath() + Constants.ImagesFolder);
 
-				if (!_hasPerformedCleanup)
+				if (!isCacheCleared)
 				{
-					_hasPerformedCleanup = true;
+					isCacheCleared = true;
 
 					foreach (var directory in imagesDirectory.EnumerateDirectories())
 					{
-						if (directory.CreationTimeUtc.Date < DateTime.UtcNow.Date.AddDays(-3))
+						if (directory.CreationTimeUtc.Date < DateTime.UtcNow.Date.AddDays(-Constants.MaximumDays))
 						{
 							directory.Delete(true);
 						}
 					}
 				}
 
+				// Return image from the cache if it exist.
 				var dayDirectory = imagesDirectory.CreateSubdirectory(DateTime.UtcNow.Day.ToString());
-				var imagePath = dayDirectory.FullName + "\\" + (uint)httpImage.GetHashCode();
+				var imagePath = dayDirectory.FullName + "\\" + (uint)imageUrl.GetHashCode();
 
 				if (File.Exists(imagePath))
 				{
 					return imagePath;
 				}
 
-				var httpClient = new HttpClient();
-				using (var stream = await httpClient.GetStreamAsync(httpImage))
-				{
-					using (var fileStream = File.OpenWrite(imagePath))
-					{
-						stream.CopyTo(fileStream);
-					}
-				}
+				// Download image to cache.
+				var webClient = new WebClient();
+				webClient.DownloadFile(imageUri, imagePath);
 
 				return imagePath;
 			}
 			catch
 			{
-				return null;
+				// Ignore image if any error occurred.
+				return string.Empty;
 			}
 		}
 	}

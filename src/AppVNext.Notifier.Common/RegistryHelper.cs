@@ -54,5 +54,16 @@ namespace AppVNext.Notifier
 
 			return EnableTypes.Unknown;
 		}
+
+		/// <summary>
+		/// Gets the value of a registry key.
+		/// </summary>
+		/// <param name="keyName">Key name.</param>
+		/// <param name="valueName">Value name.</param>
+		/// <returns>Registry object.</returns>
+		public static object GetValue(string keyName, string valueName)
+		{
+			return Registry.GetValue(keyName, valueName, null);
+		}
 	}
 }

@@ -12,6 +12,7 @@ using DesktopNotifications;
 using System.IO;
 using System.Net.Http;
 using System.Net;
+using System.Drawing;
 
 namespace AppVNext.Notifier
 {
@@ -228,6 +229,7 @@ namespace AppVNext.Notifier
 
 				if (File.Exists(imagePath))
 				{
+					ValidateImage(ref imagePath);
 					return imagePath;
 				}
 
@@ -235,12 +237,28 @@ namespace AppVNext.Notifier
 				var webClient = new WebClient();
 				webClient.DownloadFile(imageUri, imagePath);
 
+				ValidateImage(ref imagePath);
 				return imagePath;
 			}
 			catch
 			{
 				// Ignore image if any error occurred.
 				return string.Empty;
+			}
+		}
+
+		private static void ValidateImage(ref string imagePath)
+		{
+			try
+			{
+				using (var image = Image.FromFile(imagePath))
+				{ }
+			}
+			catch (OutOfMemoryException)
+			{
+				// If the file is not an image or GDI+ does not support the pixel format of the file
+				// a OutOfMemoryException will be thrown and the file will be ignored.
+				imagePath = string.Empty;
 			}
 		}
 	}

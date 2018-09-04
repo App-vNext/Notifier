@@ -50,9 +50,6 @@
 						<Component Id="Microsoft.Toolkit.Uwp.Notifications.dll" Guid="fd08f63d-48d6-4bac-a3d4-f788af135ae7">
 								<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Name="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)Microsoft.Toolkit.Uwp.Notifications.dll"/>
 						</Component>
-						<Component Id="QueryString.NETCore.dll" Guid="EE9D2B28-9CE5-4676-BFB7-E0C4F6A79488">
-								<File Id="QueryString.NETCore.dll" Name="QueryString.NETCore.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)QueryString.NETCore.dll"/>
-						</Component>
 						<Component Id="System.Xml.ReaderWriter.dll" Guid="5977365c-8e53-458e-ada3-b98665a4d780">
 								<File Id="System.Xml.ReaderWriter.dll" Name="System.Xml.ReaderWriter.dll" Source="$(var.AppVNext.Notifier.ConsoleUwp.TargetDir)System.Xml.ReaderWriter.dll"/>
 						</Component>

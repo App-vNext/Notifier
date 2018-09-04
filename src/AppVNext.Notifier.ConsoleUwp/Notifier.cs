@@ -1,18 +1,13 @@
 ﻿using AppVNext.Notifier.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Microsoft.QueryStringDotNET;
-using Windows.Data.Xml.Dom;
 using DesktopNotifications;
-using System.IO;
-using System.Net.Http;
-using System.Net;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
 namespace AppVNext.Notifier
 {

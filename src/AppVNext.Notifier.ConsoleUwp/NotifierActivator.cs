@@ -13,8 +13,8 @@
 using DesktopNotifications;
 using System;
 using System.Runtime.InteropServices;
-using static System.Environment;
 using static System.Console;
+using static System.Environment;
 
 namespace AppVNext.Notifier
 {

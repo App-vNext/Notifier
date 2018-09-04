@@ -1,15 +1,7 @@
 ﻿using AppVNext.Notifier.Common;
 using DesktopNotifications;
-using Microsoft.QueryStringDotNET;
-using Microsoft.Toolkit.Uwp.Notifications;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
 using static System.Console;
 using static System.Environment;
 

@@ -1,11 +1,9 @@
-﻿using System;
-using Windows.UI.Notifications;
-using static System.Environment;
-using static System.Console;
+﻿using AppVNext.Notifier.Common;
 using System.Collections.Generic;
 using System.Reflection;
-using AppVNext.Notifier.Common;
-using Microsoft.QueryStringDotNET;
+using Windows.UI.Notifications;
+using static System.Console;
+using static System.Environment;
 
 namespace AppVNext.Notifier
 {
